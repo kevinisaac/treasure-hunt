@@ -1,0 +1,10 @@
+# Common files
+*.backup
+*.pyc
+*.swp
+*.swo
+*~
+
+# Directories
+venv
+db
