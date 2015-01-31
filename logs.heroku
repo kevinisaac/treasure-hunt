@@ -1,0 +1,60 @@
+[2015-01-31 23:20:29 +0000] [19289] [INFO] Starting gunicorn 19.1.1
+[2015-01-31 23:20:29 +0000] [19289] [INFO] Listening at: http://127.0.0.1:8000 (19289)
+[2015-01-31 23:20:29 +0000] [19289] [INFO] Using worker: sync
+[2015-01-31 23:20:29 +0000] [19305] [INFO] Booting worker with pid: 19305
+[2015-01-31 23:20:29 +0000] [19308] [INFO] Starting gunicorn 19.1.1
+[2015-01-31 23:20:29 +0000] [19308] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:29 +0000] [19308] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:30 +0000] [19308] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:30 +0000] [19308] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:31 +0000] [19308] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:31 +0000] [19308] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:32 +0000] [19308] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:32 +0000] [19308] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:33 +0000] [19308] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:33 +0000] [19308] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:34 +0000] [19308] [ERROR] Can't connect to ('127.0.0.1', 8000)
+[2015-01-31 23:20:34 +0000] [19305] [INFO] Worker exiting (pid: 19305)
+[2015-01-31 23:20:34 +0000] [19339] [INFO] Booting worker with pid: 19339
+[2015-01-31 23:20:34 +0000] [19342] [INFO] Starting gunicorn 19.1.1
+[2015-01-31 23:20:34 +0000] [19342] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:34 +0000] [19342] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:35 +0000] [19342] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:35 +0000] [19342] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:36 +0000] [19342] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:36 +0000] [19342] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:37 +0000] [19342] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:37 +0000] [19342] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:38 +0000] [19342] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:38 +0000] [19342] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:39 +0000] [19342] [ERROR] Can't connect to ('127.0.0.1', 8000)
+[2015-01-31 23:20:39 +0000] [19339] [INFO] Worker exiting (pid: 19339)
+[2015-01-31 23:20:39 +0000] [19381] [INFO] Booting worker with pid: 19381
+[2015-01-31 23:20:40 +0000] [19384] [INFO] Starting gunicorn 19.1.1
+[2015-01-31 23:20:40 +0000] [19384] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:40 +0000] [19384] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:41 +0000] [19384] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:41 +0000] [19384] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:42 +0000] [19384] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:42 +0000] [19384] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:43 +0000] [19384] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:43 +0000] [19384] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:44 +0000] [19384] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:44 +0000] [19384] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:45 +0000] [19384] [ERROR] Can't connect to ('127.0.0.1', 8000)
+[2015-01-31 23:20:45 +0000] [19381] [INFO] Worker exiting (pid: 19381)
+[2015-01-31 23:20:45 +0000] [19423] [INFO] Booting worker with pid: 19423
+[2015-01-31 23:20:45 +0000] [19426] [INFO] Starting gunicorn 19.1.1
+[2015-01-31 23:20:45 +0000] [19426] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:45 +0000] [19426] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:46 +0000] [19426] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:46 +0000] [19426] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:47 +0000] [19426] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:47 +0000] [19426] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:48 +0000] [19426] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:48 +0000] [19426] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:49 +0000] [19426] [ERROR] Connection in use: ('127.0.0.1', 8000)
+[2015-01-31 23:20:49 +0000] [19426] [ERROR] Retrying in 1 second.
+[2015-01-31 23:20:49 +0000] [19426] [ERROR] Can't connect to ('127.0.0.1', 8000)
+[2015-01-31 23:20:49 +0000] [19289] [INFO] Handling signal: int
+[2015-01-31 23:20:49 +0000] [19289] [INFO] Shutting down: Master

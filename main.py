@@ -24,4 +24,4 @@ def post(id, slug):
     return 'Post page'
 
 # Run the app
-app.run(debug=True)
+# app.run(debug=True)
