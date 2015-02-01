@@ -58,3 +58,17 @@
 [2015-01-31 23:20:49 +0000] [19426] [ERROR] Can't connect to ('127.0.0.1', 8000)
 [2015-01-31 23:20:49 +0000] [19289] [INFO] Handling signal: int
 [2015-01-31 23:20:49 +0000] [19289] [INFO] Shutting down: Master
+[2015-01-31 23:43:18 +0000] [27876] [INFO] Starting gunicorn 19.1.1
+[2015-01-31 23:43:18 +0000] [27876] [INFO] Listening at: http://0.0.0.0:5000 (27876)
+[2015-01-31 23:43:18 +0000] [27876] [INFO] Using worker: sync
+[2015-01-31 23:43:18 +0000] [27882] [INFO] Booting worker with pid: 27882
+[2015-01-31 23:43:31 +0000] [27882] [INFO] Worker exiting (pid: 27882)
+[2015-01-31 23:43:31 +0000] [27876] [INFO] Handling signal: int
+[2015-01-31 23:43:31 +0000] [27876] [INFO] Shutting down: Master
+[2015-01-31 23:43:35 +0000] [27989] [INFO] Starting gunicorn 19.1.1
+[2015-01-31 23:43:35 +0000] [27989] [INFO] Listening at: http://0.0.0.0:5000 (27989)
+[2015-01-31 23:43:35 +0000] [27989] [INFO] Using worker: sync
+[2015-01-31 23:43:35 +0000] [27995] [INFO] Booting worker with pid: 27995
+[2015-01-31 23:52:25 +0000] [27989] [INFO] Handling signal: int
+[2015-01-31 23:52:25 +0000] [27995] [INFO] Worker exiting (pid: 27995)
+[2015-01-31 23:52:25 +0000] [27989] [INFO] Shutting down: Master
