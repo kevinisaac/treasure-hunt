@@ -17,6 +17,18 @@ class User(BaseModel):
     token = CharField()
     user_type = CharField() # participant, admin
 
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)
+
 class Post(BaseModel):
     """This model represents a post."""
     title = CharField()
