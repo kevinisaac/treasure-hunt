@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Posts</title>
+  </head>
+
+  <body>
+
+    List of posts : <br />
+    <hr /><br />
+    {% for post in posts %}
+      Title - {{ post.title }} <br />
+      Description - {{ post.description }}<br />
+      {% if post.problem_type %}
+        Level - {{ post.level }}<br />
+        Points - {{ post.points }}<br />
+        Problem type - {{ post.problem_type }}<br />
+      {% endif %}
+      <br /><br />
+    {% endfor %}
+
+  </body>
+</html>

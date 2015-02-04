@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Profile page</title>
+  </head>
+
+  <body>
+
+    Name: {{ user.name }}
+    {% if user.user_type == 'mod' %}
+      (Moderator)
+    {% endif %}
+    <br />
+    Points: {{ user.points }}
+
+  </body>
+</html>

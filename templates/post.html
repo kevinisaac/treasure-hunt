@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Post</title>
+  </head>
+
+  <body>
+
+    Title - {{ post.title }}<br />
+    Description - {{ post.description }}<br />
+    {% if post.problem_type %}
+      Level - {{ post.level }}<br />
+      Points - {{ post.points }}<br />
+      Problem type - {{ post.problem_type }}<br />
+      <form action='{{request.path}}?solution=true' method='post'>
+        Solution: {{ submission_form.solution }}<br />
+        {{ submission_form.csrf_token }}
+        <input type='submit'>
+      </form>
+    {% endif %}
+    
+    <hr />
+    {% for comment in comments %}
+      Comment - {{comment.description}}<br />
+    {% endfor %}
+    <hr />
+    
+    <form action='{{request.path}}' method='post'>
+      {{ comment_form.description.label }} {{ comment_form.description }}<br />
+      {{ comment_form.csrf_token }}
+      <input type='submit'>
+    </form>
+
+  </body>
+</html>
