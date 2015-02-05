@@ -239,9 +239,17 @@ def account():
     if request.method == 'GET':
         return render_template('account.html', profile_form=ProfileForm(), password_form=PasswordForm())
     else:
+        # Update profile details
         profile_form = ProfileForm(request.form)
         if profile_form.validate():
-            return 'df'
+            user = User.get(id=int(current_user.id))
+            user.name = profile_form.name.data
+            user.college = profile_form.college.data
+            user.city = profile_form.city.data
+            user.register_no = profile_form.register_no.data
+            user.phone = profile_form.phone.data
+            user.save()
+            return redirect(url_for('account'))
         return 'Invalid form'
 
 @app.route('/change-password', methods=['POST'])
