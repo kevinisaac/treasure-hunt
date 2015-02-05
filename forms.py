@@ -138,3 +138,12 @@ class SubmissionForm(Form):
 
     def validate(self):
         return True
+
+class UploadForm(Form):
+    image = wtforms.FileField('Image')
+
+    def __init__(self, *args, **kwargs):
+        Form.__init__(self, *args, **kwargs)
+
+    def validate(self):
+        return True

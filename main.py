@@ -1,3 +1,4 @@
+import os
 from flask import (
     abort,
     flash,
@@ -24,15 +25,18 @@ from forms import (
     PostForm,
     ProfileForm,
     RegistrationForm,
-    SubmissionForm
+    SubmissionForm,
+    UploadForm
 )
 from slugify import slugify
 from models import *
+from werkzeug import secure_filename
 
 from core import logout_required
 
 app = Flask(__name__)
 app.secret_key = 'dfsgdfgdfgdf'
+app.config['UPLOAD_FOLDER'] = os.path.dirname(os.path.abspath(__file__)) + '/static/img/'
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
@@ -59,7 +63,11 @@ def index():
         level = max_post.level + 1
     except DoesNotExist:
         level = 1
-    posts = Post.select().where(Post.level <= level).order_by(Post.id.desc())
+    
+    if current_user.user_type == 'mod':
+        posts = Post.select().order_by(Post.id.desc())
+    else:
+        posts = Post.select().where(Post.level <= level).order_by(Post.id.desc())
     
     # Get the status of the post
     for post in posts:
@@ -77,10 +85,35 @@ def index():
         if post.problem_type == '':
             post.status = ''
         
+        # Get the name of person who posted this
+        user = (
+            User.select(User.name)
+            .join(Post)
+            .where(Post.id == post.id)
+            .get()
+        )
+        post.posted_by = user.name
+        
         # Add slug title to the post
         post.slug = slugify(post.title)
-        
+    
     return render_template('posts.html', posts=posts)
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if current_user.user_type != 'mod':
+        abort(404)
+    if request.method == 'GET':
+        return render_template('upload.html', upload_form=UploadForm())
+    else:
+        file = request.files['image']
+        filename = secure_filename(file.filename)
+        print
+        print os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        print
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return redirect('/static/img/' + filename)
 
 @app.route('/login', methods=['GET', 'POST'])
 # @logout_required('.index')
@@ -137,17 +170,21 @@ def post(id, slug):
         # Get the level of the user
         try:
             max_post = (Post.select()
-                    .join(Submission)
-                    .where(Submission.id_user_posted_by == int(current_user.id))
-                    .where(Submission.status == 'accepted')
-                    .order_by(Post.level.desc())
-                    .get()
-                    )
+                .join(Submission)
+                .where(Submission.id_user_posted_by == int(current_user.id))
+                .where(Submission.status == 'accepted')
+                .order_by(Post.level.desc())
+                .get()
+            )
             level = max_post.level + 1
         except DoesNotExist:
             level = 1
+        
         # post = Post.select().where(Post.level <= level).order_by(Post.id.desc())
-        post = Post.get(Post.id == id, Post.level <= level)
+        if current_user.user_type == 'mod':
+            post = Post.get(Post.id == id)
+        else:
+            post = Post.get(Post.id == id, Post.level <= level)
         # post = Post.get(id=id)
     except DoesNotExist:
         abort(404)
@@ -167,6 +204,15 @@ def post(id, slug):
     if post.problem_type == '':
         post.status = ''
 
+    # Get the name of person who posted this
+    user = (
+        User.select(User.name)
+        .join(Post)
+        .where(Post.id == post.id)
+        .get()
+    )
+    post.posted_by = user.name
+    
     if request.method == 'POST':
         if not request.args.get('solution'):
             comment_form = CommentForm(request.form)
@@ -222,9 +268,21 @@ def delete_post(id, slug):
     if current_user.user_type != 'mod':
         abort(404)
     if current_user.user_type == 'mod':
+        # Delete all comments
+        comments = (
+            Comment
+            .select()
+            .where(Comment.id_post_belongs_to == id)
+        )
+        for comment in comments:
+            comment.delete_instance()
+        
+        # Delete the post
         post = Post.get(Post.id == int(id))
         post.delete_instance()
-        return ''
+        
+        flash('Post deleted successfully')
+        return redirect(url_for('index'))
 
 @app.route('/comments/<int:id>/accept')
 def accept_comment(id):
@@ -279,6 +337,37 @@ def change_password():
 def profile(id):
     """Profile of a user."""
     user = User.get(id=id)
+    
+    # Get the level of the user
+    try:
+        max_post = (Post.select()
+            .join(Submission)
+            .where(Submission.id_user_posted_by == int(user.id))
+            .where(Submission.status == 'accepted')
+            .order_by(Post.level.desc())
+            .get()
+        )
+        level = max_post.level + 1
+    except DoesNotExist:
+        level = 1
+        
+    # Get the total points of the user
+    points = 0
+    try:
+        posts = (
+            Post.select(Post.points)
+            .join(Submission)
+            .where(Submission.id_user_posted_by==int(user.id))
+            .where(Submission.status=='accepted')
+        )
+        for post in posts:
+            points += post.points
+    except DoesNotExist:
+        pass
+        
+    user.level = level
+    user.points = points
+    
     return render_template('profile.html', user=user)
 
 @app.route('/posts/create', methods=['GET', 'POST'])
@@ -311,10 +400,8 @@ def create_post():
                 points=points,
                 problem_type=problem_type
             )
-            return 'Post created.'
+            return redirect(url_for('index'))
         return render_template('create_post.html', post_form=PostForm())
-
-
 
 # Leaderboard
 
