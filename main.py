@@ -43,6 +43,7 @@ def load_user(userid):
 def index():
     """Home page"""
     print current_user.is_authenticated()
+    # Get the level of the user
     try:
         max_post = (Post.select()
                 .join(Submission)
@@ -54,7 +55,19 @@ def index():
         level = max_post.level + 1
     except DoesNotExist:
         level = 1
-    posts = Post.select().where(Post.level <= level)
+    posts = Post.select().where(Post.level <= level).order_by(Post.id.desc())
+    
+    # Get the status of the post
+    for post in posts:
+        try:
+            submission = Submission.get(
+                Submission.id_post==post.id,
+                Submission.id_user_posted_by==int(current_user.id),
+                Submission.status=='accepted'
+            )
+            post.status = 'Solved'
+        except DoesNotExist:
+            post.status = 'Unsolved'
     return render_template('posts.html', posts=posts)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -107,9 +120,35 @@ def register():
 def post(id, slug):
     """Post page"""
     try:
-        post = Post.get(id=id)
+        # Get the level of the user
+        try:
+            max_post = (Post.select()
+                    .join(Submission)
+                    .where(Submission.id_user_posted_by == int(current_user.id))
+                    .where(Submission.status == 'accepted')
+                    .order_by(Post.level.desc())
+                    .get()
+                    )
+            level = max_post.level + 1
+        except DoesNotExist:
+            level = 1
+        # post = Post.select().where(Post.level <= level).order_by(Post.id.desc())
+        post = Post.get(Post.id == id, Post.level <= level)
+        # post = Post.get(id=id)
     except DoesNotExist:
         abort(404)
+    
+    # Get the status of the post
+    try:
+        submission = Submission.get(
+            Submission.id_post==post.id,
+            Submission.id_user_posted_by==int(current_user.id),
+            Submission.status=='accepted'
+        )
+        post.status = 'Solved'
+    except DoesNotExist:
+        post.status = 'Unsolved'
+
     if request.method == 'POST':
         if not request.args.get('solution'):
             comment_form = CommentForm(request.form)
