@@ -2,6 +2,7 @@ from flask import (
     abort,
     flash,
     Flask,
+    jsonify,
     redirect,
     render_template,
     request,
@@ -304,3 +305,27 @@ def create_post():
             )
             return 'Post created.'
         return render_template('create_post.html', post_form=PostForm())
+
+
+
+# Leaderboard
+
+# Template
+@app.route('/leaderboard')
+def leaderboard():
+    return render_template('leaderboard.html')
+
+# API
+@app.route('/api/leaderboard')
+def leaderboard_api():
+    users = User.select().where(User.user_type!='mod')
+    data = []
+    rank = 1
+    for user in users:
+        data.append({
+            'name': user.name,
+            'college': user.college,
+            'rank': rank
+        })
+        rank += 1
+    return jsonify(data=data)
