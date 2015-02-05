@@ -204,7 +204,13 @@ def post(id, slug):
             )
         except DoesNotExist:
             pass
-    return render_template('post.html', post=post, comments=comments, comment_form=CommentForm(), submission_form=SubmissionForm())
+    return render_template(
+        'post.html',
+        post=post,
+        comments=comments,
+        comment_form=CommentForm(),
+        submission_form=SubmissionForm()
+    )
 
 @app.route('/posts/<int:id>/<slug>/delete', methods=['POST'])
 @login_required
@@ -212,8 +218,6 @@ def delete_post(id, slug):
     if current_user.user_type != 'mod':
         abort(404)
     if current_user.user_type == 'mod':
-        print '--------------------------------------------------------------'
-        print 'deleting', id
         post = Post.get(Post.id == int(id))
         post.delete_instance()
         return ''
@@ -322,10 +326,40 @@ def leaderboard_api():
     data = []
     rank = 1
     for user in users:
+        
+        # Get the level of the user
+        try:
+            max_post = (Post.select()
+                    .join(Submission)
+                    .where(Submission.id_user_posted_by == int(user.id))
+                    .where(Submission.status == 'accepted')
+                    .order_by(Post.level.desc())
+                    .get()
+                    )
+            level = max_post.level + 1
+        except DoesNotExist:
+            level = 1
+        
+        # Get the total points of the user
+        points = 0
+        try:
+            posts = (
+                Post.select(Post.points)
+                .join(Submission)
+                .where(Submission.id_user_posted_by==int(user.id))
+                .where(Submission.status=='accepted')
+            )
+            for post in posts:
+                points += post.points
+        except DoesNotExist:
+            pass
+        
         data.append({
+            'rank': rank,
             'name': user.name,
             'college': user.college,
-            'rank': rank
+            'level': level,
+            'points': points
         })
         rank += 1
     return jsonify(data=data)
