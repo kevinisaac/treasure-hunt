@@ -7,21 +7,46 @@
       <div class="col-md-6">
             <h2 class="col-md-6 col-md-offset-3 text-center">Join the case and solve the murder of Tony Stark</h2>
         </div>
-       <form class="form-horizontal reg-form col-md-6">
+       <form method="post" class="form-horizontal reg-form col-md-6">
          <legend>Register</legend>
          <div class="form-group">
             <div class="col-md-10">
-              <input type="text" class="form-control" placeholder="Name">
+                {{ registration_form.name(placeholder="Name", class="form-control") }}
             </div>
           </div>
           <div class="form-group">
             <div class="col-md-10">
-              <input type="email" class="form-control" placeholder="Email">
+                {{ registration_form.email(placeholder="Email", class="form-control") }}
             </div>
           </div>
           <div class="form-group">
             <div class="col-md-10">
-              <input type="password" class="form-control" placeholder="Password">
+                {{ registration_form.password(placeholder="Password", class="form-control") }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-10">
+                {{ registration_form.password_again(placeholder="Password again", class="form-control") }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-10">
+                {{ registration_form.college(placeholder="College", class="form-control") }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-10">
+                {{ registration_form.city(placeholder="City", class="form-control") }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-10">
+                {{ registration_form.register_no(placeholder="Register number", class="form-control") }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-10">
+                {{ registration_form.phone(placeholder="Phone no", class="form-control") }}
             </div>
           </div>
           <div class="form-group">

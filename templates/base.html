@@ -20,8 +20,8 @@
     <div class="container-fluid">
         <header class="row">
             <div class="col-md-12">
-                <div class="logo col-md-2"><h3>OTH</h3></div>
-                <ul class="menu col-md-offset-7 col-md-3">
+              <div class="logo col-md-4"><h3><a href="/">Online Treasure Hunt</a></h3></div>
+                <ul class="menu col-md-offset-5 col-md-3">
                   {% if current_user.name %}
                     <a href="#"><li>Leaderboard</li></a>
                     <a href="{{url_for('account')}}"><li>Profile</li></a>

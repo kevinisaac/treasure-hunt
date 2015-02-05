@@ -35,7 +35,18 @@ class LoginForm(Form):
         Form.__init__(self, *args, **kwargs)
 
     def validate(self):
-        return True
+        try:
+            user = User.get(User.email==self.email.data)
+            print user.password
+            print self.password
+            print generate_password_hash(self.password.data)
+        except DoesNotExist:
+            print 'Nope'
+            return False
+        
+        if check_password_hash(user.password, self.password.data):
+            return True
+        return False
 
 class LogoutForm(Form):
     pass
@@ -67,33 +78,41 @@ class CommentForm(Form):
     def validate(self):
         return True
 
+class PasswordForm(Form):
+    password = PasswordField( 'Password', [validators.InputRequired()])
+    password_again = PasswordField( 'Password Again', [validators.InputRequired(), EqualTo(password, message='Passwords must be equal') ])
+
+    def __init__(self, *args, **kwargs):
+        Form.__init__(self, *args, **kwargs)
+
+    def validate(self):
+        if self.password.data != self.password_again.data:
+            return False
+            # raise ValidationError('Passwords dont match')
+        return True
+
+class ProfileForm(Form):
+    name = wtforms.TextField( 'Name', [ validators.InputRequired() ])
+    college = wtforms.TextField( 'College', [ validators.InputRequired() ])
+    city = wtforms.TextField( 'City', [ validators.InputRequired() ])
+    register_no = wtforms.TextField( 'Register no', [ validators.InputRequired() ])
+    phone = wtforms.TextField( 'Phone', [ validators.InputRequired() ])
+
+    def __init__(self, *args, **kwargs):
+        Form.__init__(self, *args, **kwargs)
+
+    def validate(self):
+        return True
+
 class RegistrationForm(Form):
-    name = wtforms.TextField(
-        'Name',
-        [
-            validators.InputRequired()
-        ]
-    )
-    email = wtforms.TextField(
-        'Email',
-        [
-            validators.InputRequired(),
-            Email(message='Enter a proper email ID')
-        ]
-    )
-    password = PasswordField(
-        'Password',
-        [
-            validators.InputRequired()
-        ]
-    )
-    password_again = PasswordField(
-        'Password Again',
-        [
-            validators.InputRequired(),
-            EqualTo(password, message='Passwords must be equal')
-        ]
-    )
+    name = wtforms.TextField( 'Name', [ validators.InputRequired() ])
+    email = wtforms.TextField( 'Email', [ validators.InputRequired(), Email(message='Enter a proper email ID') ])
+    password = PasswordField( 'Password', [ validators.InputRequired() ])
+    password_again = PasswordField( 'Password Again', [ validators.InputRequired(), EqualTo(password, message='Passwords must be equal') ])
+    college = wtforms.TextField( 'College', [ validators.InputRequired() ])
+    city = wtforms.TextField( 'City', [ validators.InputRequired() ])
+    register_no = wtforms.TextField( 'Register no', [ validators.InputRequired() ])
+    phone = wtforms.TextField( 'Phone', [ validators.InputRequired() ])
 
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)

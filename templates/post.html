@@ -57,30 +57,45 @@
     </div>
     
     <div class="comment-wrapper col-md-12 ">
-      {%for comment in comments%}
-        <div class="comment-username col-md-4"><h4>Dude<span>(Moderator)</span></h4></div>
-        
-        <div class="comment-body col-md-12">
-          <div class="comment-desc col-md-11">{{comment.description}}</div>
-        </div>
-        
-        <div class="comment-meta col-md-12">
-          <div class="comment-date col-md-3">Posted at {{comment.created_at}}</div>
-           <form action="" class="col-md-offset-3 col-md-1">
-               <input type="text" class="btn btn-success btn-xs col-md-12" value="Accept">
-           </form>
-           <form action="" class="col-md-1">
-               <input type="text" class="btn btn-danger btn-xs col-md-12" value="Reject">
-           </form>
-           <form action="" class="col-md-1">
-               <input type="text" class="btn btn-primary btn-xs col-md-12" value="Edit">
-           </form>
-           <form action="" class="col-md-1">
-               <input type="text" class="btn btn-primary btn-xs col-md-12" value="Delete">
-           </form>
-           
-        </div>
-      {%endfor%}
+
+
+      {% for comment in comments %}
+        {% if current_user.user_type != 'mod' and comment.status == 'accepted' %}
+            <div class="comment-username col-md-4"><h4>Dude<span>(Moderator)</span></h4></div>
+            
+            <div class="comment-body col-md-12">
+              <div class="comment-desc col-md-11">{{comment.description}}</div>
+            </div>
+            
+            <div class="comment-meta col-md-12">
+              <div class="comment-date col-md-3">Posted at {{comment.created_at}}</div>
+
+            </div>
+
+          {% elif current_user.user_type == 'mod' %}
+            <div class="comment-username col-md-4"><h4>Dude<span>(Moderator)</span></h4></div>
+            
+            <div class="comment-body col-md-12">
+              <div class="comment-desc col-md-11">{{comment.description}}</div>
+            </div>
+            
+            <div class="comment-meta col-md-12">
+              <div class="comment-date col-md-3">Posted at {{comment.created_at}}</div>
+
+            </div>
+
+            {% if comment.status == '' %}
+               <form action="/comments/{{comment.id}}/accept" class="col-md-offset-3 col-md-1">
+                   <input type="submit" class="btn btn-success btn-xs col-md-12" value="Accept">
+               </form>
+               <form action="/comments/{{comment.id}}/reject" class="col-md-1">
+                   <input type="submit" class="btn btn-danger btn-xs col-md-12" value="Reject">
+               </form>
+            {% endif %}
+          {% endif %}
+      {% endfor %}
+
+
     </div>
     <hr class="post-divide col-md-10"> <!-- Comment division line -->
     

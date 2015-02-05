@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block maincontent %}
+<div class="row">
+   
+   <form action="change-password" method="post" class="form-horizontal reg-form col-md-6">
+     <legend>Password</legend>
+      <div class="form-group">
+        <div class="col-md-10">
+            {{ password_form.password(placeholder="New password", class="form-control") }}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-10">
+            {{ password_form.password_again(placeholder="New password again", class="form-control")}}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary">Change password</button>
+        </div>
+      </div>
+    </form>
+   
+   <form method="post" class="form-horizontal reg-form col-md-6">
+     <legend>Profile</legend>
+     <div class="form-group">
+        <div class="col-md-10">
+            {{ profile_form.name(placeholder="Name", class="form-control", value=current_user.name) }}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-10">
+            {{ profile_form.college(placeholder="College", class="form-control", value=current_user.college) }}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-10">
+            {{ profile_form.city(placeholder="City", class="form-control", value=current_user.city) }}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-10">
+            {{ profile_form.register_no(placeholder="Register number", class="form-control", value=current_user.register_no) }}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-10">
+            {{ profile_form.phone(placeholder="Phone no", class="form-control", value=current_user.phone) }}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary">Update Profile</button>
+        </div>
+      </div>
+    </form>
+   
+</div>
+{% endblock %}

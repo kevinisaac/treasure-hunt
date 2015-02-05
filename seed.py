@@ -3,7 +3,10 @@ from models import *
 
 # Delete all tables
 print 'Deleting tables...'
-db.drop_tables([Submission, Comment, Post, User])
+try:
+    db.drop_tables([Submission, Comment, Post, User])
+except OperationalError:
+    pass
 print 'Done!'
 
 # Create all tables

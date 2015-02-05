@@ -19,7 +19,9 @@ from flask.ext.login import (
 from forms import (
     CommentForm,
     LoginForm,
+    PasswordForm,
     PostForm,
+    ProfileForm,
     RegistrationForm,
     SubmissionForm
 )
@@ -68,6 +70,11 @@ def index():
             post.status = 'Solved'
         except DoesNotExist:
             post.status = 'Unsolved'
+        
+        # If post is normal type, no need of status
+        if post.problem_type == '':
+            post.status = ''
+        
     return render_template('posts.html', posts=posts)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -77,13 +84,14 @@ def login():
     print
     print dir(session)
     print
+    logout_user()
     if request.method == 'GET':
         return render_template('login.html', login_form=LoginForm())
     else:
         login_form = LoginForm(request.form)
         if login_form.validate():
             email = request.form.get('email')
-            login_user(User.get(email=email))
+            login_user(User.get(User.email==email))
             return redirect(request.args.get('next') or url_for('index'))
         return render_template('login.html', login_form=LoginForm())
 
@@ -99,6 +107,7 @@ def logout():
 # @logout_required('index')
 def register():
     """Registration page"""
+    logout_user()
     print current_user.is_authenticated()
     if request.method == 'GET':
         return render_template('register.html', registration_form=RegistrationForm())
@@ -148,6 +157,10 @@ def post(id, slug):
         post.status = 'Solved'
     except DoesNotExist:
         post.status = 'Unsolved'
+    
+    # If post is normal type, no need of status
+    if post.problem_type == '':
+        post.status = ''
 
     if request.method == 'POST':
         if not request.args.get('solution'):
@@ -184,7 +197,10 @@ def post(id, slug):
                 flash('Already submitted correct answer')
     if post is not None:
         try:
-            comments = Comment.select().where(Comment.id_post_belongs_to==post.id)
+            comments = Comment.select().where(
+                Comment.id_post_belongs_to==post.id,
+                (Comment.status == '') | (Comment.status == 'accepted')
+            )
         except DoesNotExist:
             pass
     return render_template('post.html', post=post, comments=comments, comment_form=CommentForm(), submission_form=SubmissionForm())
@@ -192,6 +208,8 @@ def post(id, slug):
 @app.route('/posts/<int:id>/<slug>/delete', methods=['POST'])
 @login_required
 def delete_post(id, slug):
+    if current_user.user_type != 'mod':
+        abort(404)
     if current_user.user_type == 'mod':
         print '--------------------------------------------------------------'
         print 'deleting', id
@@ -199,10 +217,45 @@ def delete_post(id, slug):
         post.delete_instance()
         return ''
 
+@app.route('/comments/<int:id>/accept')
+def accept_comment(id):
+    if current_user.user_type != 'mod':
+        return 'No permission'
+    comment = Comment.get(id=id)
+    comment.status = 'accepted'
+    comment.save()
+
+@app.route('/comments/<int:id>/reject')
+def reject_comment(id):
+    if current_user.user_type != 'mod':
+        return 'No permission'
+    comment = Comment.get(id=id)
+    comment.status = 'rejected'
+    comment.save()
+
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
-    return 'Account'
+    if request.method == 'GET':
+        return render_template('account.html', profile_form=ProfileForm(), password_form=PasswordForm())
+    else:
+        profile_form = ProfileForm(request.form)
+        if profile_form.validate():
+            return 'df'
+        return 'Invalid form'
+
+@app.route('/change-password', methods=['POST'])
+@login_required
+def change_password():
+    password_form = PasswordForm(request.form)
+    if password_form.validate():
+        user = User.get(id=int(current_user.id))
+        user.password = generate_password_hash(password_form.password.data)
+        user.save()
+        flash('Password changed successfully!')
+        return redirect(url_for('account'))
+    flash('Password cannot be updated')
+    return 'Password cannot be updated.'
 
 @app.route('/profile/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -215,6 +268,8 @@ def profile(id):
 @login_required
 def create_post():
     """Place where a user creates a post."""
+    if current_user.user_type != 'mod':
+        abort(404)
     if request.method == 'GET':
         return render_template('create_post.html', post_form=PostForm())
     elif request.method == 'POST':

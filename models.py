@@ -17,6 +17,10 @@ class User(BaseModel):
     password = CharField()
     token = CharField()
     user_type = CharField() # participant, admin
+    college = CharField()
+    city = CharField()
+    register_no = CharField()
+    phone = CharField()
 
     def is_authenticated(self):
         return True
@@ -45,6 +49,7 @@ class Comment(BaseModel):
     description = TextField()
     id_post_belongs_to = ForeignKeyField(Post, related_name='belongs_to_post')
     id_user_posted_by = ForeignKeyField(User, related_name='comment_posted_by_user')
+    status = CharField() # accepted, rejected
 
 class Problem(BaseModel):
     """This model represents a problem."""
