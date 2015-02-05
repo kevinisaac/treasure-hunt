@@ -1,23 +1,42 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Posts</title>
-  </head>
+{% extends "base.html" %}
 
-  <body>
+{% block maincontent %}
+<div class="main-content col-md-10">
+   <h2>Welcome Chosen One</h2>
 
-    List of posts : <br />
-    <hr /><br />
-    {% for post in posts %}
-      Title - {{ post.title }} <br />
-      Description - {{ post.description }}<br />
-      {% if post.problem_type %}
-        Level - {{ post.level }}<br />
-        Points - {{ post.points }}<br />
-        Problem type - {{ post.problem_type }}<br />
-      {% endif %}
-      <br /><br />
-    {% endfor %}
-
-  </body>
-</html>
+   {%for post in posts%}
+     <!-- Begin Post Wrapper -->
+      <div class="post-wrapper col-md-12 ">
+         
+          <div class="post-username col-md-4"><h4>Dude<span>(Moderator)</span></h4></div>
+          
+          <div class="post-head col-md-12">
+            <div class="post-title col-md-4"><a href="/posts/{{post.id}}/a">{{post.title}}</a></div>
+            <div class="points col-md-3"><strong>Points:</strong> <span class="green">{{post.points}}</span></div>
+            <div class="req-level col-md-3"><strong>Level:</strong> <span class="green">{{post.level}}</span></div>
+          </div>
+          
+          <div class="post-body col-md-12">
+            <div class="post-desc col-md-9">{{post.description}}</div>
+              <div class="post-status col-md-3 green">Solved</div>
+          </div>
+          
+          <div class="post-meta col-md-12">
+            <div class="post-date col-md-3">Posted at {{post.created_at}}</div>
+            {% if current_user.user_type == 'mod' %}
+             <form action="" class="col-md-offset-5 col-md-1">
+                 <input type="text" class="btn btn-primary btn-xs col-md-12" value="Edit">
+             </form>
+             <form action="/posts/{{post.id}}/a/delete" method="post" class="col-md-1">
+                 <input type="submit" class="btn btn-primary btn-xs col-md-12" value="Delete">
+             </form>
+            {% endif %}
+         </div>
+         
+      </div>
+      <!-- End Post Wrapper -->
+      <hr class="post-divide col-md-10"><!-- Post Divide Line -->
+      {%endfor%}
+    
+</div>
+{% endblock %}

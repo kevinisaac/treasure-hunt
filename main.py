@@ -5,6 +5,7 @@ from flask import (
     redirect,
     render_template,
     request,
+    session,
     url_for
 )
 from flask.ext.bcrypt import generate_password_hash, check_password_hash
@@ -49,7 +50,9 @@ def index():
 # @logout_required('.index')
 def login():
     """Login page"""
-    print current_user.is_authenticated()
+    print
+    print dir(session)
+    print
     if request.method == 'GET':
         return render_template('login.html', login_form=LoginForm())
     else:
@@ -109,7 +112,15 @@ def post(id, slug):
                 return redirect(url_for('post', id=id, slug=slug))
         else:
             submission_form = SubmissionForm(request.form)
-            if submission_form.validate():
+            try:
+                accepted_submission = Submission.get(
+                    Submission.id_user_posted_by==int(current_user.id),
+                    Submission.id_post==int(id),
+                    Submission.status=='accepted'
+                )
+            except DoesNotExist:
+                accepted_submission = None
+            if submission_form.validate() and accepted_submission is None:
                 status = 'rejected'
                 if str(submission_form.solution.data) == str(Post.get(id=int(id)).correct_solution):
                     status = 'accepted'
@@ -119,12 +130,29 @@ def post(id, slug):
                     solution=submission_form.solution.data,
                     status=status
                 )
+            else:
+                flash('Already submitted correct answer')
     if post is not None:
         try:
             comments = Comment.select().where(Comment.id_post_belongs_to==post.id)
         except DoesNotExist:
             pass
     return render_template('post.html', post=post, comments=comments, comment_form=CommentForm(), submission_form=SubmissionForm())
+
+@app.route('/posts/<int:id>/<slug>/delete', methods=['POST'])
+@login_required
+def delete_post(id, slug):
+    if current_user.user_type == 'mod':
+        print '--------------------------------------------------------------'
+        print 'deleting', id
+        post = Post.get(Post.id == int(id))
+        post.delete_instance()
+        return ''
+
+@app.route('/account', methods=['GET', 'POST'])
+@login_required
+def account():
+    return 'Account'
 
 @app.route('/profile/<int:id>', methods=['GET', 'POST'])
 @login_required

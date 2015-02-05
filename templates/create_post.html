@@ -1,22 +1,50 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Create a blog post.</title>
-  </head>
+{% extends "base.html" %}
 
-  <body>
-
-    <form action="/posts/create" method="post" accept-charset="utf-8">
-      {{ post_form.title.label }} {{ post_form.title }} <br />
-      {{ post_form.description.label }} {{ post_form.description }} <br />
-      {{ post_form.correct_solution.label }} {{ post_form.correct_solution }} <br />
-      {{ post_form.level.label }} {{ post_form.level }} <br />
-      {{ post_form.points.label }} {{ post_form.points }} <br />
-      {{ post_form.problem_type.label }} {{ post_form.problem_type }} <br />
-      {{ post_form.csrf_token }}  
-      
-      <p><input type="submit" value="Continue &rarr;" /></p>
+{% block maincontent %}
+<div class="row">
+   <div class="col-md-6">
+        <h2 class="col-md-6 col-md-offset-3 text-center">Create a new post</h2>
+    </div>
+    <br>
+   
+    <form method="post" class="form-horizontal reg-form col-md-6">
+     <legend>Create a post</legend>
+      <div class="form-group">
+        <div class="col-md-10">
+          {{post_form.title(class='form-control', placeholder='Title')}}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-10">
+          {{post_form.description(class='form-control', placeholder='Description')}}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-10">
+          {{post_form.correct_solution(class='form-control', placeholder='Correct Solution')}}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-10">
+          {{post_form.level(class='form-control', placeholder='Level')}}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-10">
+          {{post_form.points(class='form-control', placeholder='Points')}}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-10">
+          {{post_form.problem_type}}
+          {{ post_form.csrf_token }}  
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary">Create post</button>
+        </div>
+      </div>
     </form>
-
-  </body>
-</html>
+</div>
+{% endblock %}

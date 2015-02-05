@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Create a blog post.</title>
+  </head>
+
+  <body>
+
+    <form action="/posts/create" method="post" accept-charset="utf-8">
+      {{ post_form.title.label }} {{ post_form.title }} <br />
+      {{ post_form.description.label }} {{ post_form.description }} <br />
+      {{ post_form.correct_solution.label }} {{ post_form.correct_solution }} <br />
+      {{ post_form.level.label }} {{ post_form.level }} <br />
+      {{ post_form.points.label }} {{ post_form.points }} <br />
+      {{ post_form.problem_type.label }} {{ post_form.problem_type }} <br />
+      {{ post_form.csrf_token }}  
+      
+      <p><input type="submit" value="Continue &rarr;" /></p>
+    </form>
+
+  </body>
+</html>

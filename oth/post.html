@@ -1,0 +1,132 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en">
+<![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8" lang="en">
+<![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> 
+<html class="no-js" lang="en"> 
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>Online Treasure Hunt</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    
+</head>
+<body>
+    <div class="container-fluid">
+        <header class="row">
+            <div class="col-md-12">
+                <div class="logo col-md-2"><h3>OTH</h3></div>
+                <ul class="menu col-md-offset-7 col-md-3">
+                    <a href="#"><li>Random stuff</li></a>
+                    <a href="#"><li>Random stuff</li></a>
+                    <a href="#"><li>Random stuff</li></a>
+                </ul>
+            </div>
+        </header>
+        
+        <div class="content col-md-12">
+            <aside class="col-md-2">
+                <div class="side-1">
+                    
+                    <ul class="side-menu">
+                        <li class="menu-title">Menu Title</li>
+                        <a href="#"><li>Random stuff</li></a>
+                        <a href="#"><li>Random stuff</li></a>
+                        <a href="#"><li>Random stuff</li></a>
+                        <a href="#"><li>Random stuff</li></a>
+                        <a href="#"><li>Random stuff</li></a>
+                    </ul>
+                </div>
+                <div class="side-2">
+                    <ul class="side-menu">
+                        <li class="menu-title">Menu Title</li>
+                        <a href="#"><li>Random stuff</li></a>
+                        <a href="#"><li>Random stuff</li></a>
+                        <a href="#"><li>Random stuff</li></a>
+                        <a href="#"><li>Random stuff</li></a>
+                        <a href="#"><li>Random stuff</li></a>
+                    </ul>
+                </div>
+            </aside>
+            <div class="main-content col-md-10">
+               
+               <!-- Begin Post Wrapper -->
+                <div class="post-wrapper col-md-12 ">
+                   
+                    <div class="post-username col-md-4"><h4>Dude<span>(Moderator)</span></h4></div>
+                    
+                    <div class="post-head col-md-12">
+                      <div class="post-title col-md-4">{{post.title}}</div>
+                        <div class="points col-md-3"><strong>Points:</strong> <span class="green">300</span></div>
+                        <div class="req-level col-md-3"><strong>Level:</strong> <span class="green">5</span></div>
+                    </div>
+                    
+                    <div class="post-body col-md-12">
+                      <div class="post-desc col-md-9">{{post.description}}</div>
+                        <div class="post-status col-md-3 green">Solved</div>
+                    </div>
+                    
+                    <div class="post-meta col-md-12">
+                      <div class="post-date col-md-3">Posted at {{post.created_at}}</div>
+                       <form action="" class="col-md-offset-5 col-md-1">
+                           <input type="text" class="btn btn-primary btn-xs col-md-12" value="Edit">
+                       </form>
+                       <form action="" class="col-md-1">
+                           <input type="text" class="btn btn-primary btn-xs col-md-12" value="Delete">
+                       </form>
+                   </div>
+                   
+                </div>
+                <!-- End Post Wrapper -->
+                
+                <!-- Comment Box Form -->
+                <form action="{{request.path}}" method="post" class="comment-form col-md-10">
+                    {{ comment_form.description.label }} {{ comment_form.description(rows='3', cols=100, class='comment-box col-md-12', placeholder='Add a comment') }}<br />
+                    {{ comment_form.csrf_token }}
+                    <input type="submit" class="btn btn-primary btn-sm col-md-offset-11 col-md-1" value="comment">
+                </form>
+                
+                <hr class="post-divide col-md-10">
+                
+                <div class="col-md-2">
+                    <h3>Comments</h3>
+                </div>
+                
+                <div class="comment-wrapper col-md-12 ">
+                  {%for comment in comments%}
+                    <div class="comment-username col-md-4"><h4>Dude<span>(Moderator)</span></h4></div>
+                    
+                    <div class="comment-body col-md-12">
+                      <div class="comment-desc col-md-11">{{comment.description}}</div>
+                    </div>
+                    
+                    <div class="comment-meta col-md-12">
+                      <div class="comment-date col-md-3">Posted at {{comment.created_at}}</div>
+                       <form action="" class="col-md-offset-3 col-md-1">
+                           <input type="text" class="btn btn-success btn-xs col-md-12" value="Accept">
+                       </form>
+                       <form action="" class="col-md-1">
+                           <input type="text" class="btn btn-danger btn-xs col-md-12" value="Reject">
+                       </form>
+                       <form action="" class="col-md-1">
+                           <input type="text" class="btn btn-primary btn-xs col-md-12" value="Edit">
+                       </form>
+                       <form action="" class="col-md-1">
+                           <input type="text" class="btn btn-primary btn-xs col-md-12" value="Delete">
+                       </form>
+                       
+                    </div>
+                  {%endfor%}
+                </div>
+                <hr class="post-divide col-md-10"> <!-- Comment division line -->
+                
+            </div>
+        </div>
+    </div>   
+</body>
+</html>

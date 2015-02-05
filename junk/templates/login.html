@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Login page</title>
+  </head>
+
+  <body>
+
+    <form method="post">
+      {{ login_form.email.label }} {{ login_form.email }} <br />
+      {{ login_form.password.label }} {{ login_form.password() }} <br />
+      {{ login_form.csrf_token }}  
+      <input type="hidden" value="{{ request.args.get('attempt') }}" id="string">
+      <!-- <input type="email" placeholder="Email" class="form-control">
+      <input type="password" placeholder="Password" class="form-control">-->
+      <input type="submit"  value="Login"> 
+      <a href="{{ url_for('register') }}" class="reg-link">Register</a> 
+    </form>
+
+  </body>
+</html>

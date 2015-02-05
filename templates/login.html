@@ -1,21 +1,29 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Login page</title>
-  </head>
+{% extends "base.html" %}
 
-  <body>
-
-    <form method="post">
-      {{ login_form.email.label }} {{ login_form.email }} <br />
-      {{ login_form.password.label }} {{ login_form.password() }} <br />
-      {{ login_form.csrf_token }}  
-      <input type="hidden" value="{{ request.args.get('attempt') }}" id="string">
-      <!-- <input type="email" placeholder="Email" class="form-control">
-      <input type="password" placeholder="Password" class="form-control">-->
-      <input type="submit"  value="Login"> 
-      <a href="{{ url_for('register') }}" class="reg-link">Register</a> 
+{% block maincontent %}
+<div class="row">
+   <div class="col-md-6">
+        <h2 class="col-md-6 col-md-offset-3 text-center">Continue uncovering clues Detective</h2>
+    </div>
+   
+    <form method="post" class="form-horizontal reg-form col-md-6">
+     <legend>Login</legend>
+      <div class="form-group">
+        <div class="col-md-10">
+          {{login_form.email(class='form-control', placeholder='Email')}}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-10">
+          {{login_form.password(class='form-control', placeholder='Password')}}
+          {{ login_form.csrf_token }}  
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+      </div>
     </form>
-
-  </body>
-</html>
+</div>
+{% endblock %}
