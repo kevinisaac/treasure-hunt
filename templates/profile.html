@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block maincontent %}
+<div class="row">
+   
+    Name - {{user.name}}
+    {% if user.account_type == 'mod' %}
+        (Moderator)
+    {% endif %}
+    <br />
+    College - {{user.college}}<br />
+    Total points - {{user.points}}<br />
+    Level - {{user.level}}
+    
+   
+</div>
+{% endblock %}
