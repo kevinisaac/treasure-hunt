@@ -43,7 +43,18 @@ def load_user(userid):
 def index():
     """Home page"""
     print current_user.is_authenticated()
-    posts = Post.select()
+    try:
+        max_post = (Post.select()
+                .join(Submission)
+                .where(Submission.id_user_posted_by == int(current_user.id))
+                .where(Submission.status == 'accepted')
+                .order_by(Post.level.desc())
+                .get()
+                )
+        level = max_post.level + 1
+    except DoesNotExist:
+        level = 1
+    posts = Post.select().where(Post.level <= level)
     return render_template('posts.html', posts=posts)
 
 @app.route('/login', methods=['GET', 'POST'])
