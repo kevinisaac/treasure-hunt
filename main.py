@@ -26,6 +26,7 @@ from forms import (
     RegistrationForm,
     SubmissionForm
 )
+from slugify import slugify
 from models import *
 
 from core import logout_required
@@ -49,12 +50,12 @@ def index():
     # Get the level of the user
     try:
         max_post = (Post.select()
-                .join(Submission)
-                .where(Submission.id_user_posted_by == int(current_user.id))
-                .where(Submission.status == 'accepted')
-                .order_by(Post.level.desc())
-                .get()
-                )
+            .join(Submission)
+            .where(Submission.id_user_posted_by == int(current_user.id))
+            .where(Submission.status == 'accepted')
+            .order_by(Post.level.desc())
+            .get()
+        )
         level = max_post.level + 1
     except DoesNotExist:
         level = 1
@@ -75,6 +76,9 @@ def index():
         # If post is normal type, no need of status
         if post.problem_type == '':
             post.status = ''
+        
+        # Add slug title to the post
+        post.slug = slugify(post.title)
         
     return render_template('posts.html', posts=posts)
 
@@ -330,12 +334,12 @@ def leaderboard_api():
         # Get the level of the user
         try:
             max_post = (Post.select()
-                    .join(Submission)
-                    .where(Submission.id_user_posted_by == int(user.id))
-                    .where(Submission.status == 'accepted')
-                    .order_by(Post.level.desc())
-                    .get()
-                    )
+                .join(Submission)
+                .where(Submission.id_user_posted_by == int(user.id))
+                .where(Submission.status == 'accepted')
+                .order_by(Post.level.desc())
+                .get()
+            )
             level = max_post.level + 1
         except DoesNotExist:
             level = 1
