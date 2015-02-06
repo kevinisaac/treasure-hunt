@@ -2,8 +2,56 @@
 
 {% block maincontent %}
 <div class="row">
-   
-    Table here
+	
+	<table id="leaderboard" class="table table-bordered">
+		<thead>
+			<th>College</th>
+			<th>Level</th>
+			<th>Name</th>
+			<th>Points</th>
+			<th>Rank</th>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
    
 </div>
 {% endblock %}
+
+{% block scripts %}
+<script src="/static/js/jquery-1.7.2.min.js"></script>
+<script src="/static/js/jquery.dynatable.js"></script>
+<script>
+$.dynatableSetup({
+  // global default options here
+  features: {
+    paginate: true,
+    sort: true,
+    pushState: true,
+    search: false,
+    recordCount: false,
+    perPageSelect: true
+  }
+});
+
+$('#leaderboard').dynatable({
+  dataset: {
+    ajax: true,
+    ajaxUrl: '/static/leaderboard.json',
+    ajaxOnLoad: true,
+    records: []
+  }
+});
+
+/*$.ajax({
+  url: '/static/leaderboard.json',
+  success: function(data){
+    $('#leaderboard').dynatable({
+      dataset: {
+        records: data
+      }
+    });
+  }
+});*/
+</script>
+{% endblock scripts %}

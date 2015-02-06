@@ -288,7 +288,6 @@ table {
 }
 
 body {
-  font-size: 1em;
   margin: auto;
 }
 
@@ -297,14 +296,48 @@ header {
   color: white;
   height: 60px;
 }
+header .logo {
+  text-decoration: none !important;
+}
 header .menu {
-  height: 40px;
+  height: 60px;
   margin-top: 20px;
 }
 header .menu li {
   list-style: none;
   display: inline-block;
   padding-right: 10px;
+}
+
+footer {
+  background: black;
+  color: white;
+  height: 60px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+footer p {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.alert-box {
+  min-width: 200px;
+  width: auto;
+  height: 40px;
+  background: #2a6496;
+  color: white;
+  position: fixed;
+  top: 10px;
+  left: 40%;
+}
+.alert-box p {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 15px;
+  width: auto;
+  padding: 0 5px 0 5px;
 }
 
 .side-menu {
@@ -321,7 +354,7 @@ header .menu li {
 }
 
 .green {
-  color: green;
+  color: blue;
   font-weight: bold;
 }
 
@@ -393,8 +426,6 @@ header .menu li {
   float: right;
 }
 
-* {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+.log-form {
+  margin-top: 120px;
 }

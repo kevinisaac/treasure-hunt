@@ -1,0 +1,155 @@
+body{
+    margin: auto;
+}
+
+header{
+    background: black;
+    color: white;
+    height: 60px;
+    
+    .logo{
+		text-decoration:none !important;
+    }
+    
+    .menu{
+        height: 60px;
+        margin-top: 20px;
+        li{
+            list-style: none;
+            display: inline-block;
+            padding-right: 10px;
+        }
+    }
+}
+
+footer{
+	background:black;
+	color:white;
+	height:60px;
+	position:fixed;
+	bottom:0;
+	width:100%;
+	
+	p{
+		text-align:center;
+		margin-top:20px;
+	}
+}
+
+.alert-box{
+	min-width:200px;
+	width:auto;
+	height:40px;
+	background:#2a6496;
+	color:white;
+	position:fixed;
+	top:10px;
+	left:40%;
+	
+	p{
+		text-align:center;
+		margin-top:10px;
+		font-size:15px;
+		width:auto;
+		padding:0 5px 0 5px;
+	}
+}
+
+.side-menu{
+    padding-left: 0;
+    margin-bottom: 40px;
+    
+    .menu-title{
+        font-weight: bold;
+        font-size: 14px;
+    }
+    
+    li{
+        list-style: none;
+        padding-bottom: 10px;
+    }
+}
+
+.green{
+    color: blue;
+    font-weight: bold;
+}
+
+.red{
+    color:red;
+    font-weight: bold;
+}
+
+.post-date{
+    color: #000;
+    opacity: 0.4;
+    font-size: 14px;
+}
+
+.post-wrapper{
+    height:auto;
+    margin-bottom: 20px;
+}
+
+.post-title{
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.post-body{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.post-divide{
+    color: #000;
+}
+
+.post-head,.post-body,.post-meta,.comment-body,.comment-meta{
+    padding-left: 0 !important;
+}
+
+//Post Page
+.comment-box{
+    resize: none;
+    margin-bottom: 5px;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+    padding-right: 2px !important;
+}
+
+.comment-wrapper{
+    margin-bottom: 20px;
+}
+
+.comment-date{
+    color: #000;
+    opacity: 0.4;
+    font-size: 14px;
+}
+
+.comment-body{
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+//Profile
+.profile{
+    font-size: 25px;
+    
+    .title{
+        font-weight: bold;
+        float: left;
+    }
+    
+    .value{
+        float: right;
+    }
+}
+
+//Login
+
+.log-form{
+	margin-top:120px;
+}
+
