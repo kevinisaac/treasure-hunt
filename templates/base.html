@@ -28,7 +28,7 @@
                     <a href="{{url_for('account')}}"><li>Profile</li></a>
                     <li><a href="{{url_for('logout')}}">Logout</a> &nbsp({{current_user.name}})</li>
                   {% else %}
-                    <a href="#"><li>Leaderboard</li></a>
+                  <a href="{{url_for('leaderboard')}}"><li>Leaderboard</li></a>
                     <a href="{{url_for('login')}}"><li>Login</li></a>
                     <a href="{{url_for('register')}}"><li>Register</li></a>
                   {% endif %}

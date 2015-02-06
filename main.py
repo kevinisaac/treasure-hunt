@@ -145,9 +145,6 @@ def upload():
 # @logout_required('.index')
 def login():
     """Login page"""
-    print
-    print dir(session)
-    print
     logout_user()
     if request.method == 'GET':
         return render_template('login.html', login_form=LoginForm())
@@ -172,27 +169,22 @@ def logout():
 def register():
     """Registration page"""
     logout_user()
-    print current_user.is_authenticated()
     if request.method == 'GET':
         return render_template('register.html', registration_form=RegistrationForm())
-    else:
-        registration_form = RegistrationForm(request.form)
-        if registration_form.validate():
-            token = hashlib.md5(
-                request.form['name'] + '+=' + request.form['email']
-            ).hexdigest()
-            new_user = User.create(
-                name=request.form['name'],
-                email=request.form['email'],
-                password=generate_password_hash(request.form['password']),
-                token=token
-            )
-            print
-            print token
-            print
-            flash('Account created successfully! Head over to <b>' + request.form['email'] + '</b> for confirmation link.', 'success')
-            return redirect(url_for('index'))
-        return render_template('register.html', registration_form=RegistrationForm())
+    registration_form = RegistrationForm(request.form)
+    if registration_form.validate():
+        token = hashlib.md5(
+            request.form['name'] + '+=' + request.form['email']
+        ).hexdigest()
+        new_user = User.create(
+            name=request.form['name'],
+            email=request.form['email'],
+            password=generate_password_hash(request.form['password']),
+            token=token
+        )
+        flash('Account created successfully! Head over to ' + request.form['email'] + ' for confirmation link.', 'success')
+        return redirect(url_for('index'))
+    return render_template('register.html', registration_form=RegistrationForm())
 
 @app.route('/posts/<int:id>/<slug>', methods=['GET', 'POST'])
 @login_required
@@ -486,3 +478,33 @@ def leaderboard_api():
         })
         rank += 1
     return jsonify(data=data)
+
+# Mail related routes
+# Validate account route
+@app.route('/account/validate')
+def validate_account():
+    logout_user()
+    
+    if not request.args.get('email') or not request.args.get('token'):
+        abort(404)
+    
+    # Abort if no user is found
+    try:
+        user = User.get(User.email==request.args.get('email'))
+    except DoesNotExist:
+        abort(404)
+    
+    # Check if account is already verified
+    if user.token == '':
+        flash('Account already verified')
+        return redirect(url_for('login'))
+    
+    #  Check if invalid token
+    if user.token != request.args.get('token'):
+        return 'Invalid token'
+    
+    # Verify account
+    user.token = ''
+    user.save()
+    flash('Account verified successfully! Login to continue')
+    return redirect(url_for('login'))
