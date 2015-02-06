@@ -1,5 +1,4 @@
 body{
-    font-size: 1em;
     margin: auto;
 }
 
@@ -9,11 +8,11 @@ header{
     height: 60px;
     
     .logo{
-    
+		text-decoration:none !important;
     }
     
     .menu{
-        height: 40px;
+        height: 60px;
         margin-top: 20px;
         li{
             list-style: none;
@@ -23,6 +22,38 @@ header{
     }
 }
 
+footer{
+	background:black;
+	color:white;
+	height:60px;
+	position:fixed;
+	bottom:0;
+	width:100%;
+	
+	p{
+		text-align:center;
+		margin-top:20px;
+	}
+}
+
+.alert-box{
+	min-width:200px;
+	width:auto;
+	height:40px;
+	background:#2a6496;
+	color:white;
+	position:fixed;
+	top:10px;
+	left:40%;
+	
+	p{
+		text-align:center;
+		margin-top:10px;
+		font-size:15px;
+		width:auto;
+		padding:0 5px 0 5px;
+	}
+}
 
 .side-menu{
     padding-left: 0;
@@ -118,7 +149,7 @@ header{
 
 //Login
 
-.reg-form{
-	margin-top:150px;
+.log-form{
+	margin-top:120px;
 }
 

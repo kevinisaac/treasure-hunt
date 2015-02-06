@@ -21,7 +21,7 @@
     <div class="container-fluid">
         <header class="row">
             <div class="col-md-12">
-              <div class="logo col-md-4"><h3><a href="/">Online Treasure Hunt</a></h3></div>
+              <div class="col-md-4"><h3><a class="logo" href="/">Online Treasure Hunt</a></h3></div>
                 <ul class="menu col-md-offset-5 col-md-3">
                   {% if current_user.name %}
                   <a href="{{url_for('leaderboard')}}"><li>Leaderboard</li></a>
@@ -35,6 +35,10 @@
                 </ul>
             </div>
         </header>
+		
+		<div class="alert-box">
+			<p>This is a message! You are a loooser.</p>
+		</div>
         
         <div class="content col-md-12">
             <aside class="col-md-2">
@@ -69,6 +73,9 @@
             </div>
         </div>
     </div> 
+	<footer>
+		<p>&copy; Copyright <a href="http://www.mindkraft.org">Mindkraft 2015</a></p>
+	</footer>
 {% block scripts %}{% endblock scripts %}	
 </body>
 </html>
