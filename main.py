@@ -1,3 +1,4 @@
+import hashlib
 import os
 from flask import (
     abort,
@@ -10,6 +11,7 @@ from flask import (
     session,
     url_for
 )
+from flask_mail import Mail, Message
 from flask.ext.bcrypt import generate_password_hash, check_password_hash
 from flask.ext.login import (
     current_user,
@@ -41,11 +43,35 @@ login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
 
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'kevin.isaac70@gmail.com'
+app.config['MAIL_PASSWORD'] = 'uqqiswmideldydxp'
+app.config['MAIL_DEFAULT_SENDER'] = ('Kevin Isaac', 'kevin.isaac70@gmail.com')
+app.config['MAIL_SUPPRESS_SEND'] = False
+mail = Mail(app)
+
 @login_manager.user_loader
 def load_user(userid):
     return User.get(id=int(userid))
 
 # Routes
+@app.route('/test/mail')
+@login_required
+def test_mail():
+    msg = Message(
+        "Welcome to Online Treasure Hunt",
+        recipients = ['kevin.isaac70@gmail.com', 'kevini@karunya.edu.in']
+    )
+    msg.body = """
+    Hello. Thanks for signing up. Click on the following link to activate your account.
+
+    http://treasurehunt.mindkraft.org/verify?token=sdfsdfsdfsdfsdfs
+
+    See you on the other side!
+    """
+    mail.send(msg)
+
 @app.route('/')
 @login_required
 def index():
@@ -127,7 +153,7 @@ def login():
         return render_template('login.html', login_form=LoginForm())
     else:
         login_form = LoginForm(request.form)
-        if login_form.validate():
+        if login_form.validate_on_submit():
             email = request.form.get('email')
             login_user(User.get(User.email==email))
             return redirect(request.args.get('next') or url_for('index'))
@@ -152,13 +178,19 @@ def register():
     else:
         registration_form = RegistrationForm(request.form)
         if registration_form.validate():
+            token = hashlib.md5(
+                request.form['name'] + '+=' + request.form['email']
+            ).hexdigest()
             new_user = User.create(
                 name=request.form['name'],
                 email=request.form['email'],
-                password=generate_password_hash(request.form['password'])
+                password=generate_password_hash(request.form['password']),
+                token=token
             )
-            login_user(new_user)
-            flash('Account created successfully!')
+            print
+            print token
+            print
+            flash('Account created successfully! Head over to <b>' + request.form['email'] + '</b> for confirmation link.', 'success')
             return redirect(url_for('index'))
         return render_template('register.html', registration_form=RegistrationForm())
 

@@ -37,7 +37,7 @@
         </header>
 		
 		<div class="alert-box">
-			<p>This is a message! You are a loooser.</p>
+      <p>{% for message in get_flashed_messages() %}{{message}}{% endfor %}</p>
 		</div>
         
         <div class="content col-md-12">
