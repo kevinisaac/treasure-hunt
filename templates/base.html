@@ -81,9 +81,20 @@
 	<script src="/static/js/jquery-1.7.2.min.js"></script>
 	<script>
     $(document).ready(function(){
+        //To close alert div
         var alert = $('div.alert-box');
         alert.click(function(){
             alert.hide();
+        });
+        
+        //TO convert text to img tag
+        var imgLink = $('a.post-img');
+        imgLink.each(function(){
+            var imgName = imgLink.text();
+            if(imgName){
+                imgLink.html('<img src="/static/img/'+imgName+'.jpg">');
+                imgLink.attr('href','/static/img/'+imgName+'.jpg');
+            }
         });
     });
     </script>
