@@ -45,6 +45,8 @@ login_manager.init_app(app)
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'kevin.isaac70@gmail.com'
 app.config['MAIL_PASSWORD'] = 'uqqiswmideldydxp'
 app.config['MAIL_DEFAULT_SENDER'] = ('Kevin Isaac', 'kevin.isaac70@gmail.com')
@@ -116,7 +118,7 @@ def test_mail():
     msg.body = """
     Hello. Thanks for signing up. Click on the following link to activate your account.
 
-    http://treasurehunt.mindkraft.org/verify?token=sdfsdfsdfsdfsdfs
+    http://treasurehunt.mindkraft.org/verify?token=
 
     See you on the other side!
     """
@@ -237,6 +239,19 @@ def register():
             register_no=request.form['register_no'],
             token=token
         )
+        # Send confirmation email
+        msg = Message(
+            "Welcome to Online Treasure Hunt - Mindkraft 2015",
+            recipients = ['kevin.isaac70@gmail.com', new_user.email]
+        )
+        msg.body = """
+        Hello. Thanks for signing up. Click on the following link to activate your account.
+
+        http://treasurehunt.mindkraft.org/verify?email=%s&token=%s
+
+        See you on the other side!
+        """ % (new_user.email, new_user.token)
+        mail.send(msg)
         flash('Account created successfully! Head over to ' + request.form['email'] + ' for confirmation link.', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', registration_form=RegistrationForm(), top_users=get_all_users())
