@@ -139,6 +139,12 @@ footer{
 .profile{
     font-size: 25px;
     
+    .profile-detail{
+        width: auto;
+        height: 50px;
+        padding-bottom: 20px;
+    }
+    
     .title{
         font-weight: bold;
         float: left;

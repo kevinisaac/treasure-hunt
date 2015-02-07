@@ -2,16 +2,31 @@
 
 {% block maincontent %}
 <div class="row">
-   
-    Name - {{user.name}}
-    {% if user.account_type == 'mod' %}
+   <h2 class="col-md-offset-5">Profile</h2>
+   <div class="profile col-md-6 col-md-offset-3">
+    <div class="profile-detail">
+        <div class="title col-md-6">Name:</div>
+        <div class="value col-md-6">{{user.name}}{% if user.account_type == 'mod' %}
         (Moderator)
-    {% endif %}
-    <br />
-    College - {{user.college}}<br />
-    Total points - {{user.points}}<br />
-    Level - {{user.level}}<br />
-    Rank - {{user.rank}}
+    {% endif %}</div>
+    </div>
+    <div class="profile-detail">
+        <div class="title col-md-6">College:</div>
+        <div class="value col-md-6">{{user.college}} temp value</div>
+    </div>
+    <div class="profile-detail">
+        <div class="title col-md-6">Points:</div>
+        <div class="value col-md-6">{{user.points}}</div>
+    </div>
+    <div class="profile-detail">
+        <div class="title col-md-6">Level:</div>
+        <div class="value col-md-6">{{user.level}}</div>
+    </div>
+    <div class="profile-detail">
+        <div class="title col-md-6">Rank:</div>
+        <div class="value col-md-6">{{user.rank}}</div>
+    </div>
+</div>
     
 </div>
 {% endblock %}

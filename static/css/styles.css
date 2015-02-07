@@ -420,6 +420,11 @@ footer p {
 .profile {
   font-size: 25px;
 }
+.profile .profile-detail {
+  width: auto;
+  height: 50px;
+  padding-bottom: 20px;
+}
 .profile .title {
   font-weight: bold;
   float: left;
