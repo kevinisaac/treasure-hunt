@@ -51,22 +51,15 @@ $(document).ready(function(){
   }
 });*/
 
+//Tried to post it as JSON data(var final) and as a Javascript object(var json) as is given in the docs but still not working
 $('#leaderboard').dynatable({
   dataset: {
     records: json
   }
 });
+    
 
-/*$.ajax({
-  url: '{{ url_for("leaderboard_api") }}',
-  success: function(data){
-    $('#leaderboard').dynatable({
-      dataset: {
-        records: data
-      }
-    });
-  }
-});*/
+
 });
 
 </script>
