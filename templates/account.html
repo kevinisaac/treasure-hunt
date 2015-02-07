@@ -13,6 +13,7 @@
       <div class="form-group">
         <div class="col-md-10">
             {{ password_form.password_again(placeholder="New password again", class="form-control")}}
+            {{ password_form.csrf_token }}
         </div>
       </div>
       <div class="form-group">
@@ -47,6 +48,7 @@
       <div class="form-group">
         <div class="col-md-10">
             {{ profile_form.phone(placeholder="Phone no", class="form-control", value=current_user.phone) }}
+            {{ profile_form.csrf_token }}
         </div>
       </div>
       <div class="form-group">

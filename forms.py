@@ -88,12 +88,14 @@ class CommentForm(Form):
 
 class PasswordForm(Form):
     password = PasswordField( 'Password', [validators.InputRequired()])
-    password_again = PasswordField( 'Password Again', [validators.InputRequired(), EqualTo(password, message='Passwords must be equal') ])
+    password_again = PasswordField( 'Password Again', [validators.InputRequired()])
 
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
 
     def validate(self):
+        if not Form.validate(self):
+            return False
         if self.password.data != self.password_again.data:
             return False
             # raise ValidationError('Passwords dont match')
@@ -114,7 +116,7 @@ class ProfileForm(Form):
 
 class RegistrationForm(Form):
     name = StringField( 'Name', [ validators.Required() ])
-    email = StringField( 'Email', [ validators.Required() ])
+    email = EmailField( 'Email', [ validators.Required() ])
     password = PasswordField( 'Password', [ validators.Required() ])
     password_again = PasswordField( 'Password Again', [ validators.Required() ])
     college = StringField(

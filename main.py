@@ -177,13 +177,17 @@ def register():
             request.form['name'] + '+=' + request.form['email']
         ).hexdigest()
         new_user = User.create(
-            name=request.form['name'],
+            city=request.form['city'],
+            college=request.form['college'],
             email=request.form['email'],
+            name=request.form['name'],
             password=generate_password_hash(request.form['password']),
+            phone=request.form['phone'],
+            register_no=request.form['register_no'],
             token=token
         )
         flash('Account created successfully! Head over to ' + request.form['email'] + ' for confirmation link.', 'success')
-        return redirect(url_for('index'))
+        return redirect(url_for('login'))
     return render_template('register.html', registration_form=RegistrationForm())
 
 @app.route('/posts/<int:id>/<slug>', methods=['GET', 'POST'])
@@ -351,10 +355,11 @@ def change_password():
         user = User.get(id=int(current_user.id))
         user.password = generate_password_hash(password_form.password.data)
         user.save()
+        print 'gone'
         flash('Password changed successfully!')
         return redirect(url_for('account'))
-    flash('Password cannot be updated')
-    return 'Password cannot be updated.'
+    flash('Password cannot be updated. Do the passwords match?')
+    return redirect(url_for('account'))
 
 @app.route('/profile/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -508,3 +513,53 @@ def validate_account():
     user.save()
     flash('Account verified successfully! Login to continue')
     return redirect(url_for('login'))
+
+# Email my password reset link
+@app.route('/account/reset', methods=['GET', 'POST'])
+def reset_password():
+    if request.method == 'POST':
+        # Abort if no user is found
+        try:
+            user = User.get(User.email==request.args.get('email'))
+        except DoesNotExist:
+            abort(404)
+    
+        password_form = PasswordForm(request.form)
+        if password_form.validate():
+            user = User.get(id=int(user.id))
+            user.password = generate_password_hash(password_form.password.data)
+            user.save()
+            flash('Password changed successfully! Login to your account now')
+            return redirect(url_for('login'))
+        flash('Password cannot be updated. Do the passwords match?')
+        return redirect(url_for('reset_password'))
+
+    
+    if not request.args.get('email') or not request.args.get('token'):
+        abort(404)
+    
+    # Abort if no user is found
+    try:
+        user = User.get(User.email==request.args.get('email'))
+    except DoesNotExist:
+        abort(404)
+    
+    if request.args.get('token') != hashlib.md5(user.password).hexdigest():
+        return 'Wrong token. Please try again!'
+    
+    return render_template('resetpassword.html', password_form=PasswordForm())
+
+@app.route('/account/reset/form', methods=['GET', 'POST'])
+def reset_password_form():
+    logout_user()
+    if request.method == 'GET':
+        return render_template('forgotpassword.html')
+    try:
+        user = User.get(User.email == request.form['email'])
+    except DoesNotExist, e:
+        flash('No such user registered')
+        return redirect(url_for('reset_password_form'))
+    #TODO: Send the password to the email
+    print hashlib.md5(user.password).hexdigest()
+    flash('Password reset email has been sent')
+    return redirect(url_for('reset_password_form'))
