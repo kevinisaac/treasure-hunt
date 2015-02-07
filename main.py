@@ -251,9 +251,10 @@ def register():
 
         See you on the other side!
         """ % (new_user.email, new_user.token)
-        mail.send(msg)
-        flash('Account created successfully! Head over to ' + request.form['email'] + ' for confirmation link.', 'success')
-        return redirect(url_for('login'))
+        # mail.send(msg)
+        # flash('Account created successfully! Head over to ' + request.form['email'] + ' for confirmation link.', 'success')
+        flash('Login now')
+        return redirect('https://online-treasure.herokuapp.com/account/validate?email=' + new_user.email + '&token=' + new_user.token)
     return render_template('register.html', registration_form=RegistrationForm(), top_users=get_all_users())
 
 @app.route('/posts/<int:id>/<slug>', methods=['GET', 'POST'])
