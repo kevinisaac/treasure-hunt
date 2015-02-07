@@ -5,11 +5,12 @@
 	
 	<table id="leaderboard" class="table table-bordered">
 		<thead>
+			<th>Rank</th>
 			<th>College</th>
-			<th>Level</th>
+			<th>City</th>
 			<th>Name</th>
 			<th>Points</th>
-			<th>Rank</th>
+			<th>Level</th>
 		</thead>
 		<tbody>
 		</tbody>
@@ -54,7 +55,7 @@ $(document).ready(function(){
 //Tried to post it as JSON data(var final) and as a Javascript object(var json) as is given in the docs but still not working
 $('#leaderboard').dynatable({
   dataset: {
-    records: json
+    records: json['data']
   }
 });
     
