@@ -38,6 +38,7 @@ from core import logout_required
 app = Flask(__name__)
 app.secret_key = 'dfsgdfgdfgdf'
 app.config['UPLOAD_FOLDER'] = os.path.dirname(os.path.abspath(__file__)) + '/static/img/'
+app.debug = True
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
