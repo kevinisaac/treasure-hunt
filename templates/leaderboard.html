@@ -19,32 +19,46 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="/static/js/jquery-1.7.2.min.js"></script>
 <script src="/static/js/jquery.dynatable.js"></script>
 <script>
-$.dynatableSetup({
+$(document).ready(function(){
+    var json = (function () {
+    var json = null;
+    $.ajax({
+        'async': false,
+        'global': false,
+        'url': '{{ url_for("leaderboard_api") }}',
+        'dataType': "json",
+        'success': function (data) {
+            json = data;
+        }
+    });
+    return json;
+})(); 
+    
+    var final = JSON.stringify(json); 
+    console.log(final);
+    
+/*$.dynatableSetup({
   // global default options here
   features: {
-    paginate: true,
+    paginate: false,
     sort: true,
     pushState: true,
     search: false,
     recordCount: false,
     perPageSelect: true
   }
-});
+});*/
 
 $('#leaderboard').dynatable({
   dataset: {
-    ajax: true,
-    ajaxUrl: '/static/leaderboard.json',
-    ajaxOnLoad: true,
-    records: []
+    records: json
   }
 });
 
 /*$.ajax({
-  url: '/static/leaderboard.json',
+  url: '{{ url_for("leaderboard_api") }}',
   success: function(data){
     $('#leaderboard').dynatable({
       dataset: {
@@ -53,5 +67,7 @@ $('#leaderboard').dynatable({
     });
   }
 });*/
+});
+
 </script>
 {% endblock scripts %}

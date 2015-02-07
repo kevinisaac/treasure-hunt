@@ -324,13 +324,15 @@ footer p {
 
 .alert-box {
   min-width: 200px;
+  max-width: 500px;
   width: auto;
   height: 40px;
   background: #2a6496;
   color: white;
   position: fixed;
   top: 10px;
-  left: 40%;
+  left: 37%;
+  cursor: pointer;
 }
 .alert-box p {
   text-align: center;

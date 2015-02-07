@@ -36,7 +36,7 @@
             </div>
         </header>
 		
-		<div class="alert-box">
+		<div class="alert-box" title="Click to hide">
       <p>{% for message in get_flashed_messages() %}{{message}}{% endfor %}</p>
 		</div>
         
@@ -78,6 +78,15 @@
 	<footer>
 		<p>&copy; Copyright <a href="http://www.mindkraft.org">Mindkraft 2015</a></p>
 	</footer>
+	<script src="/static/js/jquery-1.7.2.min.js"></script>
+	<script>
+    $(document).ready(function(){
+        var alert = $('div.alert-box');
+        alert.click(function(){
+            alert.hide();
+        });
+    });
+    </script>
 {% block scripts %}{% endblock scripts %}	
 </body>
 </html>

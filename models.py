@@ -1,8 +1,8 @@
 from datetime import datetime
 from peewee import *
 
-# db = MySQLDatabase('oth',host="10.10.67.123",port=3306, user='user', password='computer')
-db = MySQLDatabase('oth', user='oth', password='oth')
+db = MySQLDatabase('oth',host="127.0.0.1",port=3306, user='user', password='computer')
+#db = MySQLDatabase('oth', user='oth', password='oth')
 
 class BaseModel(Model):
     """This is the base model which is inherited by all other models."""
