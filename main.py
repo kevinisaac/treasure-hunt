@@ -1,5 +1,4 @@
-import hashlib
-import os
+import hashlib, operator, os
 from flask import (
     abort,
     flash,
@@ -51,6 +50,54 @@ app.config['MAIL_DEFAULT_SENDER'] = ('Kevin Isaac', 'kevin.isaac70@gmail.com')
 app.config['MAIL_SUPPRESS_SEND'] = False
 mail = Mail(app)
 
+def get_all_users():
+    users = User.select().where(User.user_type!='mod')
+    data = []
+    rank = 1
+    for user in users:
+        # Get the level of the user
+        try:
+            max_post = (Post.select()
+                .where(Post.problem_type != 'bonus')
+                .join(Submission)
+                .where(Submission.id_user_posted_by == int(user.id))
+                .where(Submission.status == 'accepted')
+                .order_by(Post.level.desc())
+                .get()
+            )
+            level = max_post.level + 1
+        except DoesNotExist:
+            level = 1
+        user.level = level
+        
+        # Get the total points of the user
+        points = 0
+        try:
+            posts = (
+                Post.select(Post.points)
+                .join(Submission)
+                .where(Submission.id_user_posted_by==int(user.id))
+                .where(Submission.status=='accepted')
+            )
+            for post in posts:
+                points += post.points
+        except DoesNotExist:
+            pass
+        user.points = points
+        data.append({
+            'id': user.id,
+            'name': user.name,
+            'college': user.college,
+            'level': user.level,
+            'points': user.points
+        })
+    users = sorted(data, key=operator.itemgetter('points'), reverse=True)
+    for user in users:
+        print user['name']
+        user['rank'] = rank
+        rank += 1
+    return data
+
 @login_manager.user_loader
 def load_user(userid):
     return User.get(id=int(userid))
@@ -80,6 +127,7 @@ def index():
     # Get the level of the user
     try:
         max_post = (Post.select()
+            .where(Post.problem_type != 'bonus')
             .join(Submission)
             .where(Submission.id_user_posted_by == int(current_user.id))
             .where(Submission.status == 'accepted')
@@ -123,7 +171,7 @@ def index():
         # Add slug title to the post
         post.slug = slugify(post.title)
     
-    return render_template('posts.html', posts=posts)
+    return render_template('posts.html', posts=posts, top_users=get_all_users())
 
 @app.route('/upload', methods=['GET', 'POST'])
 @login_required
@@ -131,7 +179,7 @@ def upload():
     if current_user.user_type != 'mod':
         abort(404)
     if request.method == 'GET':
-        return render_template('upload.html', upload_form=UploadForm())
+        return render_template('upload.html', upload_form=UploadForm(), top_users=get_all_users())
     else:
         file = request.files['image']
         filename = secure_filename(file.filename)
@@ -147,14 +195,14 @@ def login():
     """Login page"""
     logout_user()
     if request.method == 'GET':
-        return render_template('login.html', login_form=LoginForm())
+        return render_template('login.html', login_form=LoginForm(), top_users=get_all_users())
     else:
         login_form = LoginForm(request.form)
         if login_form.validate_on_submit():
             email = request.form.get('email')
             login_user(User.get(User.email==email))
             return redirect(request.args.get('next') or url_for('index'))
-        return render_template('login.html', login_form=LoginForm())
+        return render_template('login.html', login_form=LoginForm(), top_users=get_all_users())
 
 @app.route('/logout')
 @login_required
@@ -170,7 +218,7 @@ def register():
     """Registration page"""
     logout_user()
     if request.method == 'GET':
-        return render_template('register.html', registration_form=RegistrationForm())
+        return render_template('register.html', registration_form=RegistrationForm(), top_users=get_all_users())
     registration_form = RegistrationForm(request.form)
     if registration_form.validate():
         token = hashlib.md5(
@@ -188,7 +236,7 @@ def register():
         )
         flash('Account created successfully! Head over to ' + request.form['email'] + ' for confirmation link.', 'success')
         return redirect(url_for('login'))
-    return render_template('register.html', registration_form=RegistrationForm())
+    return render_template('register.html', registration_form=RegistrationForm(), top_users=get_all_users())
 
 @app.route('/posts/<int:id>/<slug>', methods=['GET', 'POST'])
 @login_required
@@ -198,6 +246,7 @@ def post(id, slug):
         # Get the level of the user
         try:
             max_post = (Post.select()
+                .where(Post.problem_type != 'bonus')
                 .join(Submission)
                 .where(Submission.id_user_posted_by == int(current_user.id))
                 .where(Submission.status == 'accepted')
@@ -264,8 +313,11 @@ def post(id, slug):
                 accepted_submission = None
             if submission_form.validate() and accepted_submission is None:
                 status = 'rejected'
-                if str(submission_form.solution.data) == str(Post.get(id=int(id)).correct_solution):
+                if str(submission_form.solution.data).lower().strip() == str(Post.get(id=int(id)).correct_solution).lower().strip():
                     status = 'accepted'
+                    flash('Your answer was correct. Congratulations!')
+                else:
+                    flash('Incorrect answer')
                 Submission.create(
                     id_post=int(id),
                     id_user_posted_by=int(current_user.id),
@@ -287,7 +339,8 @@ def post(id, slug):
         post=post,
         comments=comments,
         comment_form=CommentForm(),
-        submission_form=SubmissionForm()
+        submission_form=SubmissionForm(),
+        top_users=get_all_users()
     )
 
 @app.route('/posts/<int:id>/<slug>/delete', methods=['POST'])
@@ -319,6 +372,7 @@ def accept_comment(id):
     comment = Comment.get(id=id)
     comment.status = 'accepted'
     comment.save()
+    return redirect(url_for('index'))
 
 @app.route('/comments/<int:id>/reject')
 def reject_comment(id):
@@ -327,12 +381,13 @@ def reject_comment(id):
     comment = Comment.get(id=id)
     comment.status = 'rejected'
     comment.save()
+    return redirect(url_for('index'))
 
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
     if request.method == 'GET':
-        return render_template('account.html', profile_form=ProfileForm(), password_form=PasswordForm())
+        return render_template('account.html', profile_form=ProfileForm(), password_form=PasswordForm(), top_users=get_all_users())
     else:
         # Update profile details
         profile_form = ProfileForm(request.form)
@@ -370,6 +425,7 @@ def profile(id):
     # Get the level of the user
     try:
         max_post = (Post.select()
+            .where(Post.problem_type != 'bonus')
             .join(Submission)
             .where(Submission.id_user_posted_by == int(user.id))
             .where(Submission.status == 'accepted')
@@ -379,7 +435,14 @@ def profile(id):
         level = max_post.level + 1
     except DoesNotExist:
         level = 1
-        
+    user.level = level
+    
+    # Get the rank of the user
+    for u in get_all_users():
+        if u['id'] == user.id:
+            user.rank = u['rank']
+            break
+    
     # Get the total points of the user
     points = 0
     try:
@@ -397,7 +460,7 @@ def profile(id):
     user.level = level
     user.points = points
     
-    return render_template('profile.html', user=user)
+    return render_template('profile.html', user=user, top_users=get_all_users())
 
 @app.route('/posts/create', methods=['GET', 'POST'])
 @login_required
@@ -406,7 +469,7 @@ def create_post():
     if current_user.user_type != 'mod':
         abort(404)
     if request.method == 'GET':
-        return render_template('create_post.html', post_form=PostForm())
+        return render_template('create_post.html', post_form=PostForm(), top_users=get_all_users())
     elif request.method == 'POST':
         post_form = PostForm(request.form)
         print 'df'
@@ -430,59 +493,21 @@ def create_post():
                 problem_type=problem_type
             )
             return redirect(url_for('index'))
-        return render_template('create_post.html', post_form=PostForm())
+        return render_template('create_post.html', post_form=PostForm(), top_users=get_all_users())
 
 # Leaderboard
 
 # Template
 @app.route('/leaderboard')
 def leaderboard():
-    return render_template('leaderboard.html')
+    users_list = get_all_users()
+    return render_template('leaderboard.html', top_users=users_list)
 
 # API
 @app.route('/api/leaderboard')
 def leaderboard_api():
-    users = User.select().where(User.user_type!='mod')
-    data = []
-    rank = 1
-    for user in users:
-        
-        # Get the level of the user
-        try:
-            max_post = (Post.select()
-                .join(Submission)
-                .where(Submission.id_user_posted_by == int(user.id))
-                .where(Submission.status == 'accepted')
-                .order_by(Post.level.desc())
-                .get()
-            )
-            level = max_post.level + 1
-        except DoesNotExist:
-            level = 1
-        
-        # Get the total points of the user
-        points = 0
-        try:
-            posts = (
-                Post.select(Post.points)
-                .join(Submission)
-                .where(Submission.id_user_posted_by==int(user.id))
-                .where(Submission.status=='accepted')
-            )
-            for post in posts:
-                points += post.points
-        except DoesNotExist:
-            pass
-        
-        data.append({
-            'rank': rank,
-            'name': user.name,
-            'college': user.college,
-            'level': level,
-            'points': points
-        })
-        rank += 1
-    return jsonify(data=data)
+    users_list = get_all_users() # Returns a list of users
+    return jsonify(data=users_list)
 
 # Mail related routes
 # Validate account route
@@ -547,13 +572,13 @@ def reset_password():
     if request.args.get('token') != hashlib.md5(user.password).hexdigest():
         return 'Wrong token. Please try again!'
     
-    return render_template('resetpassword.html', password_form=PasswordForm())
+    return render_template('resetpassword.html', password_form=PasswordForm(), top_users=get_all_users())
 
 @app.route('/account/reset/form', methods=['GET', 'POST'])
 def reset_password_form():
     logout_user()
     if request.method == 'GET':
-        return render_template('forgotpassword.html')
+        return render_template('forgotpassword.html', top_users=get_all_users())
     try:
         user = User.get(User.email == request.form['email'])
     except DoesNotExist, e:
