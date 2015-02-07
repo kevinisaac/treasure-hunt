@@ -491,7 +491,6 @@ def create_post():
         return render_template('create_post.html', post_form=PostForm(), top_users=get_all_users())
     elif request.method == 'POST':
         post_form = PostForm(request.form)
-        print 'df'
         if post_form.validate():
             correct_solution = ''
             level = 0
@@ -513,6 +512,18 @@ def create_post():
             )
             return redirect(url_for('index'))
         return render_template('create_post.html', post_form=PostForm(), top_users=get_all_users())
+
+@app.route('/posts/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_post():
+    """Edit the details of a post."""
+    if current_user.user_type != 'mod':
+        abort(404)
+    if request.method == 'GET':
+        return render_template('edit_post.html', post_edit_form=PostEditForm(), top_users=get_all_users())
+    else:
+        pass
+
 
 # Leaderboard
 

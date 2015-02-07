@@ -59,6 +59,19 @@ class LoginForm(Form):
 class LogoutForm(Form):
     pass
 
+class PostEditForm(Form):
+    title = wtforms.StringField('Post title', [InputRequired()])
+    description = wtforms.TextAreaField('Post description', [InputRequired()])
+    correct_solution = wtforms.StringField('Correct solution', [])
+    level = wtforms.StringField('Level', [])
+    points = wtforms.StringField('Points', [])
+
+    def __init__(self, *args, **kwargs):
+        Form.__init__(self, *args, **kwargs)
+
+    def validate(self):
+        return True
+
 class PostForm(Form):
     title = wtforms.StringField('Post title', [InputRequired()])
     description = wtforms.TextAreaField('Post description', [InputRequired()])
