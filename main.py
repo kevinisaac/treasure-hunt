@@ -317,6 +317,20 @@ def post(id, slug):
         .get()
     )
     post.posted_by = user.name
+
+    # Get the users who have solved this puzzle
+    solved_by_users_obj = (
+        User.select(User.name, User.id)
+        .join(Submission)
+        .where(Submission.status == 'solved')
+        .where(Submission.id_post == id)
+    )
+    solved_by_users = []
+    for user in solved_by_users_obj:
+        solved_by_users.append({
+            'name': user.name,
+            'id': user.id
+        })
     
     if request.method == 'POST':
         if not request.args.get('solution'):
@@ -368,6 +382,7 @@ def post(id, slug):
         comments=comments,
         comment_form=CommentForm(),
         submission_form=SubmissionForm(),
+        solved_by_users=solved_by_users,
         top_users=get_all_users()
     )
 

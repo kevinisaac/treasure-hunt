@@ -65,12 +65,19 @@
                 </div>
                 <div class="side-2">
                     <ul class="side-menu">
+                      {% if solved_by_users and current_user.user_type == 'mod' %}
+                        <li class="menu-title">Alloo</li>
+                        {% for user in solved_by_users %}
+                          <a href="{{url_for('profile', id=user.id)}}"><li>user.name</li></a>
+                        {% endfor %}
+                      {% else %}
                         <li class="menu-title">&nbsp</li>
                         <a href="#"><li></li>&nbsp</a>
                         <a href="#"><li></li>&nbsp</a>
                         <a href="#"><li></li>&nbsp</a>
                         <a href="#"><li></li>&nbsp</a>
                         <a href="#"><li></li>&nbsp</a>
+                      {% endif %}
                     </ul>
                 </div>
             </aside>
