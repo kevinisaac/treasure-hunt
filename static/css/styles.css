@@ -433,6 +433,10 @@ footer p {
   margin-bottom: 10px;
 }
 
+.btn-post {
+  margin-left: 15px;
+}
+
 .profile {
   font-size: 25px;
 }

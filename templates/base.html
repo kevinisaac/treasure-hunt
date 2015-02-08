@@ -88,13 +88,24 @@
         });
         
         //TO convert text to img tag
-        var imgLink = $('a.post-img');
-        imgLink.each(function(){
-            var imgName = imgLink.text();
-            if(imgName){
-                imgLink.html('<img src="/static/img/'+imgName+'.jpg">');
-                imgLink.attr('href','/static/img/'+imgName+'.jpg');
-            }
+        //Format ((img=/path/to/image))
+        var postDesc = $('.post-desc');
+        postDesc.each(function(){
+            var fullText = postDesc.text();
+            console.log(fullText);
+            /*var startIndex = fullText.search("(");
+            var pathStart = startIndex + 6;
+            var endIndex = fullText.search(")");
+            var pathEnd = endIndex -1;
+            var toReplace = fullText.substring(startIndex, endIndex);
+            var imgPath = fullText.substring(pathStart, pathEnd);*/ //Get the image path
+            var toReplace = /\(\(([^)]+)\)\)/;
+            console.log(toReplace);
+            var imgPath = fullText.match(toReplace);
+            console.log(imgPath);
+            //var res = fullText.replace(toReplace,"<a href='"+imgPath+"'><img src='"+imgPath+"'></a>");
+            var res = fullText.replace("((/static/img/myvim.png))","<a href='"+imgPath+"'><img src='"+imgPath+"'></a>");
+            console.log(res);
         });
     });
     </script>
