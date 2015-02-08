@@ -107,6 +107,15 @@ def get_all_users():
 def load_user(userid):
     return User.get(id=int(userid))
 
+# Before and after
+@appHandler.before_request
+def before_request():
+    db.connect()
+
+@appHandler.teardown_request
+def teardown_request(exception):
+    db.close()
+
 # Routes
 @app.route('/test/mail')
 @login_required
