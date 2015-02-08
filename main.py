@@ -110,11 +110,13 @@ def load_user(userid):
 # Before and after
 @appHandler.before_request
 def before_request():
-    db.connect()
+    # db.connect()
+    pass
 
 @appHandler.teardown_request
 def teardown_request(exception):
-    db.close()
+    # db.close()
+    pass
 
 # Routes
 @app.route('/test/mail')
