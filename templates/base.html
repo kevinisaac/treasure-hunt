@@ -22,13 +22,14 @@
         <header class="row">
             <div class="col-md-12">
               <div class="col-md-4"><h3><a class="logo" href="/">Online Treasure Hunt</a></h3></div>
-                <ul class="menu col-md-offset-5 col-md-3">
+                <ul class="menu col-md-offset-3 col-md-5">
                   {% if current_user.name %}
-                  <a href="{{url_for('leaderboard')}}"><li>Leaderboard</li></a>
-                    <a href="{{url_for('account')}}"><li>Profile</li></a>
+                  <a href="/leaderboard?sorts[rank]=1"><li>Leaderboard</li></a>
+                    <a href="{{url_for('account')}}"><li>Account</li></a>
+                    <a href="{{url_for('profile', id=current_user.id)}}"><li>Profile</li></a>
                     <li><a href="{{url_for('logout')}}">Logout</a> &nbsp({{current_user.name}})</li>
                   {% else %}
-                  <a href="{{url_for('leaderboard')}}"><li>Leaderboard</li></a>
+                  <a href="/leaderboard?sorts[rank]=1"><li>Leaderboard</li></a>
                     <a href="{{url_for('login')}}"><li>Login</li></a>
                     <a href="{{url_for('register')}}"><li>Register</li></a>
                   {% endif %}
@@ -36,9 +37,16 @@
             </div>
         </header>
 		
-		<div class="alert-box" title="Click to hide">
-      <p>{% for message in get_flashed_messages() %}{{message}}{% endfor %}</p>
+    {% set messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+		<div class="alert-box 
+      
+        alert-green
+      
+      " title="Click to hide" style="margin: auto;">
+      <p>{{messages['message']}}{% for category, message in messages %}{{message}}{% endfor %}</p>
 		</div>
+    {% endif %}
         
         <div class="content col-md-12">
             <aside class="col-md-2">
@@ -49,7 +57,7 @@
                         {% set i = 0 %}
                         {% for user in top_users | sort(attribute='rank') %}
                           {% if i < 10 %}
-                          <li><a href="{{url_for('profile', id=user.id)}}">{{user.name}}</a> ({{user.points}})</li>
+                          <li><a href="{{url_for('profile', id=user.id)}}">{{user.profile_link}}</a> ({{user.points}})</li>
                             {% set i = i + 1 %}
                           {% endif %}
                         {% endfor %}

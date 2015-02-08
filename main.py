@@ -86,8 +86,10 @@ def get_all_users():
         user.points = points
         data.append({
             'id': user.id,
-            'name': user.name,
+            'profile_link': user.name,
+            'name': '<a target="_blank" href="/profile/' + str(user.id) + '">' + user.name + '</a>',
             'college': user.college,
+            'city': user.city,
             'level': user.level,
             'points': user.points
         })
