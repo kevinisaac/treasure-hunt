@@ -108,15 +108,13 @@ def load_user(userid):
     return User.get(id=int(userid))
 
 # Before and after
-@appHandler.before_request
+@app.before_request
 def before_request():
-    # db.connect()
-    pass
+    db.connect()
 
-@appHandler.teardown_request
+@app.teardown_request
 def teardown_request(exception):
-    # db.close()
-    pass
+    db.close()
 
 # Routes
 @app.route('/test/mail')
