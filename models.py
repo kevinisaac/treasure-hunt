@@ -1,21 +1,21 @@
 from datetime import datetime
 from peewee import *
 
-db = PostgresqlDatabase(
-    'd7qflqsae354vb',
-    user='gxejbqspznnxgx',
-    host='ec2-54-235-99-22.compute-1.amazonaws.com',
-    port=5432,
-    password='PSxE9GEUhEvT9cev4z_h7Ywo7p',
-    autocommit=True,
-    autorollback=True
-)
-# db = MySQLDatabase(
-#     'cdb_eval_b15bf53043ed33d',
-#     host = 'us-mm-demo-dca-01.cleardb.com',
-#     user = '14590faa1103ba',
-#     password = '0268a94e'
+# db = PostgresqlDatabase(
+#     'd7qflqsae354vb',
+#     user='gxejbqspznnxgx',
+#     host='ec2-54-235-99-22.compute-1.amazonaws.com',
+#     port=5432,
+#     password='PSxE9GEUhEvT9cev4z_h7Ywo7p',
+#     autocommit=True,
+#     autorollback=True
 # )
+db = MySQLDatabase(
+    'cdb_eval_b15bf53043ed33d',
+    host = 'us-mm-demo-dca-01.cleardb.com',
+    user = '14590faa1103ba',
+    password = '0268a94e'
+)
 
 class BaseModel(Model):
     """This is the base model which is inherited by all other models."""
