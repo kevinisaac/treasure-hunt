@@ -7,6 +7,8 @@ try:
     db.drop_tables([Submission, Comment, Post, User])
 except OperationalError:
     pass
+except Exception:
+    pass
 print 'Done!'
 
 # Create all tables

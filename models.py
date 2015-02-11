@@ -1,7 +1,15 @@
 from datetime import datetime
 from peewee import *
 
-db = SqliteDatabase('oth.db')
+db = PostgresqlDatabase(
+    'd7qflqsae354vb',
+    user='gxejbqspznnxgx',
+    host='ec2-54-235-99-22.compute-1.amazonaws.com',
+    port=5432,
+    password='PSxE9GEUhEvT9cev4z_h7Ywo7p',
+    autocommit=True,
+    autorollback=True
+)
 # db = MySQLDatabase(
 #     'cdb_eval_b15bf53043ed33d',
 #     host = 'us-mm-demo-dca-01.cleardb.com',

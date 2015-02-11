@@ -143,6 +143,7 @@ def test_mail():
 @app.route('/')
 @login_required
 def index():
+    return 'df'
     """Home page"""
     print current_user.is_authenticated()
     # Get the level of the user
