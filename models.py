@@ -2,10 +2,10 @@ from datetime import datetime
 from peewee import *
 
 db = MySQLDatabase(
-    'oth',
-    host = 'localhost',
-    user = 'oth',
-    password = 'oth'
+    'cdb_eval_b15bf53043ed33d',
+    host = 'us-mm-demo-dca-01.cleardb.com',
+    user = '14590faa1103ba',
+    password = '0268a94e'
 )
 
 class BaseModel(Model):

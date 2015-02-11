@@ -1,5 +1,5 @@
 # App configuration
-DEBUG = True
+DEBUG = False
 SECRET_KEY = '5434#$%3434c34%#4d535@#^8^(8n64342534'
 DEBUG_TB_INTERCEPT_REDIRECTS = False
 
@@ -8,11 +8,11 @@ MAIL_SERVER = 'smtp.gmail.com'
 MAIL_PORT = 465
 MAIL_USE_TLS = False
 MAIL_USE_SSL = True
-MAIL_USERNAME = 'kevin.isaac70@gmail.com'
-MAIL_PASSWORD = 'uqqiswmideldydxp'
-MAIL_DEFAULT_SENDER = ('Kevin Isaac', 'kevin.isaac70@gmail.com')
+MAIL_USERNAME = 'mindkraft.treasure.hunt'
+MAIL_PASSWORD = 'bennette'
+MAIL_DEFAULT_SENDER = ('Treasure Hunt - Mindkraft 2015', 'mindkraft.treasure.hunt@gmail.com')
 MAIL_SUPPRESS_SEND = False
-MAIL_DEBUG = True
+MAIL_DEBUG = False
 TESTING = False
 
 # Peewee configuration
