@@ -41,6 +41,7 @@ app = Flask(__name__, instance_relative_config=True)
 # Load the default config
 app.config.from_object('config')
 app.config.from_pyfile('config.py')
+print 'app created'
 
 login_manager = LoginManager()
 login_manager.login_view = 'login'
@@ -48,6 +49,7 @@ login_manager.init_app(app)
 
 toolbar = DebugToolbarExtension(app)
 mail = Mail(app)
+print 'mail instantiated'
 
 def get_all_users():
     users = User.select().where(User.user_type!='mod')
@@ -106,7 +108,9 @@ def load_user(userid):
 # Before and after
 @app.before_request
 def before_request():
+    print 'before connect'
     db.connect()
+    print 'after connect'
 
 @app.teardown_request
 def teardown_request(exception):
