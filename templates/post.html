@@ -9,7 +9,7 @@
         <div class="post-username col-md-4"><h4>{{post.posted_by}} <span>(Moderator)</span></h4></div>
         
         <div class="post-head col-md-12">
-          <div class="post-title col-md-4">{{post.title}}</div>
+          <div class="post-title col-md-9">{{post.title}}</div>
           <div class="points col-md-3">
             {% if post.status %}
               <strong>Points:</strong> <span class="green">{{post.points}}</span>
@@ -69,7 +69,13 @@
 
       {% for comment in comments %}
         {% if current_user.user_type != 'mod' and comment.status == 'accepted' %}
-            <div class="comment-username col-md-4"><h4>Dude<span>(Moderator)</span></h4></div>
+        <div class="comment-username col-md-4"><h4>{{comment.id_user_posted_by.name}}<span>
+                        {% if comment.id_user_posted_by.user_type == 'mod' %}    
+                        (Moderator)
+                        {% endif %}
+                
+                
+                </span></h4></div>
             
             <div class="comment-body col-md-12">
               <div class="comment-desc col-md-11">{{comment.description}}</div>
@@ -81,7 +87,12 @@
             </div>
 
           {% elif current_user.user_type == 'mod' %}
-            <div class="comment-username col-md-4"><h4>Dude<span>(Moderator)</span></h4></div>
+            <div class="comment-username col-md-4"><h4>{{comment.id_user_posted_by.name}}<span>
+                        {% if comment.id_user_posted_by.user_type == 'mod' %}    
+                        (Moderator)
+                        {% endif %}
+                    
+                    </span></h4></div>
             
             <div class="comment-body col-md-12">
               <div class="comment-desc col-md-11">{{comment.description}}</div>

@@ -401,6 +401,7 @@ footer p {
 
 .post-desc {
   white-space: pre;
+  word-break: break-word;
 }
 
 .post-divide {

@@ -10,6 +10,7 @@ from flask import (
     session,
     url_for
 )
+from flask_debugtoolbar import DebugToolbarExtension
 from flask_mail import Mail, Message
 from flask.ext.bcrypt import generate_password_hash, check_password_hash
 from flask.ext.login import (
@@ -29,28 +30,23 @@ from forms import (
     SubmissionForm,
     UploadForm
 )
-from slugify import slugify
 from models import *
+from slugify import slugify
 from werkzeug import secure_filename
 
 from core import logout_required
 
-app = Flask(__name__)
-app.secret_key = 'dfsgdfgdfgdf'
-app.config['UPLOAD_FOLDER'] = os.path.dirname(os.path.abspath(__file__)) + '/static/img/'
-app.debug = True
+app = Flask(__name__, instance_relative_config=True)
+
+# Load the default config
+app.config.from_object('config')
+app.config.from_pyfile('config.py')
+
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
 
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'kevin.isaac70@gmail.com'
-app.config['MAIL_PASSWORD'] = 'uqqiswmideldydxp'
-app.config['MAIL_DEFAULT_SENDER'] = ('Kevin Isaac', 'kevin.isaac70@gmail.com')
-app.config['MAIL_SUPPRESS_SEND'] = False
+toolbar = DebugToolbarExtension(app)
 mail = Mail(app)
 
 def get_all_users():
@@ -127,7 +123,7 @@ def test_mail():
     msg.body = """
     Hello. Thanks for signing up. Click on the following link to activate your account.
 
-    http://treasurehunt.mindkraft.org/verify?token=
+    https://online-treasure.herokuapp.com/verify?token=
 
     See you on the other side!
     """
@@ -249,21 +245,22 @@ def register():
             token=token
         )
         # Send confirmation email
-        msg = Message(
-            "Welcome to Online Treasure Hunt - Mindkraft 2015",
-            recipients = ['kevin.isaac70@gmail.com', new_user.email]
-        )
-        msg.body = """
-        Hello. Thanks for signing up. Click on the following link to activate your account.
+        recipients = ['kevin.isaac70@gmail.co', new_user.email]
+        for recipient in recipients:
+            msg = Message(
+                "Welcome to Online Treasure Hunt - Mindkraft 2015",
+                recipients = [recipient]
+            )
+            msg.body = """
+            Hello. Thanks for signing up. Click on the following link to activate your account.
 
-        http://treasurehunt.mindkraft.org/verify?email=%s&token=%s
+            https://online-treasure.herokuapp.com/account/validate?email=%s&token=%s
 
-        See you on the other side!
-        """ % (new_user.email, new_user.token)
-        # mail.send(msg)
-        # flash('Account created successfully! Head over to ' + request.form['email'] + ' for confirmation link.', 'success')
-        flash('Login now')
-        return redirect('https://online-treasure.herokuapp.com/account/validate?email=' + new_user.email + '&token=' + new_user.token)
+            See you on the other side!
+            """ % (new_user.email, new_user.token)
+            mail.send(msg)
+        flash('Account created successfully! Head over to ' + request.form['email'] + ' for confirmation link.', 'success')
+        return redirect(url_for('login'))
     return render_template('register.html', registration_form=RegistrationForm(), top_users=get_all_users())
 
 @app.route('/posts/<int:id>/<slug>', methods=['GET', 'POST'])
@@ -327,6 +324,9 @@ def post(id, slug):
     )
     solved_by_users = []
     for user in solved_by_users_obj:
+        print
+        print user.name, user.id
+        print
         solved_by_users.append({
             'name': user.name,
             'id': user.id
@@ -342,6 +342,7 @@ def post(id, slug):
                     id_post_belongs_to=int(id),
                     id_user_posted_by=int(current_user.id)
                 )
+                flash('Your comment is waiting moderator approval')
                 return redirect(url_for('post', id=id, slug=slug))
         else:
             submission_form = SubmissionForm(request.form)
@@ -370,12 +371,18 @@ def post(id, slug):
                 flash('Already submitted correct answer')
     if post is not None:
         try:
-            comments = Comment.select().where(
+            comments = (Comment
+                .select()
+                .join(User)
+                .where(
                 Comment.id_post_belongs_to==post.id,
                 (Comment.status == '') | (Comment.status == 'accepted')
             )
+        )
         except DoesNotExist:
             pass
+        for comment in comments:
+            print dir(comment)
     return render_template(
         'post.html',
         post=post,
@@ -590,6 +597,28 @@ def validate_account():
     # Verify account
     user.token = ''
     user.save()
+    
+    # Send welcome email
+    recipients = ['kevin.isaac70@gmail.com', user.email]
+    for recipient in recipients:
+        msg = Message(
+            "Welcome to Online Treasure Hunt",
+            recipients = [recipient]
+        )
+        msg.body = """
+        Hello! Welcome to the event. The following are a few rules and regulations.
+        
+        <b>Rules:</b>
+        1. df
+        2. df
+        3. dff
+        
+        <b>Heads ups:</b>
+        1. one
+        2. two
+        """
+        mail.send(msg)
+    
     flash('Account verified successfully! Login to continue')
     return redirect(url_for('login'))
 
@@ -639,6 +668,22 @@ def reset_password_form():
         flash('No such user registered')
         return redirect(url_for('reset_password_form'))
     #TODO: Send the password to the email
+    
+    # Send confirmation email
+    recipients = [user.email]
+    for recipient in recipients:
+        msg = Message(
+            "Password reset link",
+            recipients = [recipient]
+        )
+        msg.body = """
+        Click on the following link to reset your password:
+        
+        https://online-treasure.herokuapp.com/account/reset?email=%s&token=%s
+        
+        """ % (user.email, hashlib.md5(user.password).hexdigest())
+        mail.send(msg)
+    
     print hashlib.md5(user.password).hexdigest()
     flash('Password reset email has been sent')
     return redirect(url_for('reset_password_form'))

@@ -170,13 +170,27 @@ class RegistrationForm(Form):
             return False
         
         try:
-            User.get(email=self.email.data)
+            user = User.get(
+                User.email == self.email.data,
+                User.token == ''
+            )
             flash('Email ID already taken!', 'error')
             return False
         except DoesNotExist:
             if self.password.data != self.password_again.data:
                 flash('Passwords do not match', 'error')
                 return False
+            try:
+                user = User.get(
+                    User.email == self.email.data,
+                    User.token != ''
+                )
+                # If user has token, delete the user
+                if user.token != '':
+                    user.delete_instance()
+                    return True
+            except:
+                pass
         return True
 
 class SubmissionForm(Form):
