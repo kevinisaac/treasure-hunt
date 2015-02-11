@@ -36,19 +36,20 @@ from werkzeug import secure_filename
 
 from core import logout_required
 
-app = Flask(__name__, instance_relative_config=True)
+# app = Flask(__name__, instance_relative_config=True)
+app = Flask(__name__)
 
 # Load the default config
 print 'before app creation'
 app.config.from_object('config')
-app.config.from_pyfile('config.py')
+# app.config.from_pyfile('config.py')
 print 'app created'
 
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
 
-toolbar = DebugToolbarExtension(app)
+# toolbar = DebugToolbarExtension(app)
 mail = Mail(app)
 print 'mail instantiated'
 
