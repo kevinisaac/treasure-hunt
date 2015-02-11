@@ -39,6 +39,7 @@ from core import logout_required
 app = Flask(__name__, instance_relative_config=True)
 
 # Load the default config
+print 'before app creation'
 app.config.from_object('config')
 app.config.from_pyfile('config.py')
 print 'app created'
