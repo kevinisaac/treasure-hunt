@@ -19,12 +19,12 @@ print 'Done!'
 print 'Poplulating mods...'
 mods = ['rex', 'kevin', 'nicholas']
 for user in mods:
-    User.create(name=user, email=user+'@gmail.com', password=generate_password_hash(user), user_type='mod')
+    User.create(name=user, email=user+'@gmail.com', password=generate_password_hash(user), user_type='mod', token='', college='', register_no='', city='', phone='')
 print 'Done!'
 
 # Add users
 print 'Poplulating users...'
 users = ['apple', 'ball', 'cat', 'dog', 'elephant', 'flower', 'giant', 'hippopotamus', 'idiot', 'janet', 'killer', 'lordkiller', 'mario']
 for user in users:
-    User.create(name=user, email=user+'@gmail.com', password=generate_password_hash(user))
+    User.create(name=user, email=user+'@gmail.com', password=generate_password_hash(user), token='', college='', register_no='', city='', phone='', user_type='')
 print 'Done!'

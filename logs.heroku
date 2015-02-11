@@ -72,3 +72,16 @@
 [2015-01-31 23:52:25 +0000] [27989] [INFO] Handling signal: int
 [2015-01-31 23:52:25 +0000] [27995] [INFO] Worker exiting (pid: 27995)
 [2015-01-31 23:52:25 +0000] [27989] [INFO] Shutting down: Master
+[2015-02-11 22:44:46 +0000] [29011] [INFO] Starting gunicorn 19.1.1
+[2015-02-11 22:44:46 +0000] [29011] [INFO] Listening at: http://127.0.0.1:8000 (29011)
+[2015-02-11 22:44:46 +0000] [29011] [INFO] Using worker: sync
+[2015-02-11 22:44:46 +0000] [29017] [INFO] Booting worker with pid: 29017
+[2015-02-11 22:45:27 +0000] [29011] [CRITICAL] WORKER TIMEOUT (pid:29017)
+[2015-02-11 22:45:27 +0000] [29017] [INFO] Worker exiting (pid: 29017)
+[2015-02-11 22:45:27 +0000] [29311] [INFO] Booting worker with pid: 29311
+[2015-02-11 22:46:35 +0000] [29011] [CRITICAL] WORKER TIMEOUT (pid:29311)
+[2015-02-11 22:46:35 +0000] [29311] [INFO] Worker exiting (pid: 29311)
+[2015-02-11 22:46:35 +0000] [29831] [INFO] Booting worker with pid: 29831
+[2015-02-11 22:48:22 +0000] [29831] [INFO] Worker exiting (pid: 29831)
+[2015-02-11 22:48:22 +0000] [29011] [INFO] Handling signal: int
+[2015-02-11 22:48:23 +0000] [29011] [INFO] Shutting down: Master

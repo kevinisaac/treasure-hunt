@@ -53,7 +53,10 @@ mail = Mail(app)
 print 'mail instantiated'
 
 def get_all_users():
-    users = User.select().where(User.user_type!='mod')
+    try:
+        users = User.select().where(User.user_type!='mod')
+    except DoesNotExist:
+        return []
     data = []
     rank = 1
     for user in users:
@@ -71,6 +74,7 @@ def get_all_users():
         except DoesNotExist:
             level = 1
         user.level = level
+        print 'gau - level got'
         
         # Get the total points of the user
         points = 0
@@ -86,6 +90,7 @@ def get_all_users():
         except DoesNotExist:
             pass
         user.points = points
+        print 'gau - points got'
         data.append({
             'id': user.id,
             'profile_link': user.name,
@@ -96,6 +101,7 @@ def get_all_users():
             'points': user.points
         })
     users = sorted(data, key=operator.itemgetter('points'), reverse=True)
+    print 'gau - sorted'
     for user in users:
         print user['name']
         user['rank'] = rank
@@ -152,11 +158,13 @@ def index():
         level = max_post.level + 1
     except DoesNotExist:
         level = 1
+    print 'level of user got'
     
     if current_user.user_type == 'mod':
         posts = Post.select().order_by(Post.id.desc())
     else:
         posts = Post.select().where(Post.level <= level).order_by(Post.id.desc())
+    print 'posts got'
     
     # Get the status of the post
     for post in posts:
@@ -185,6 +193,7 @@ def index():
         
         # Add slug title to the post
         post.slug = slugify(post.title)
+    print 'posts status got'
     
     return render_template('posts.html', posts=posts, top_users=get_all_users())
 

@@ -55,12 +55,14 @@
                     <ul class="side-menu">
                         <li class="menu-title">Top scorers</li>
                         {% set i = 0 %}
-                        {% for user in top_users | sort(attribute='rank') %}
-                          {% if i < 10 %}
-                          <li><a href="{{url_for('profile', id=user.id)}}">{{user.profile_link}}</a> ({{user.points}})</li>
-                            {% set i = i + 1 %}
+                          {% if top_users %}
+                            {% for user in top_users | sort(attribute='rank') %}
+                              {% if i < 10 %}
+                              <li><a href="{{url_for('profile', id=user.id)}}">{{user.profile_link}}</a> ({{user.points}})</li>
+                                {% set i = i + 1 %}
+                              {% endif %}
+                            {% endfor %}
                           {% endif %}
-                        {% endfor %}
                     </ul>
                 </div>
                 <div class="side-2">
