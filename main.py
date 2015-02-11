@@ -55,7 +55,7 @@ print 'mail instantiated'
 
 def get_all_users():
     try:
-        users = User.select().where(User.user_type!='mod')
+        users = User.select().where(User.user_type!='mod', User.token=='')
     except DoesNotExist:
         return []
     data = []
