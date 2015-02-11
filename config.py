@@ -1,5 +1,5 @@
 # App configuration
-DEBUG = False
+DEBUG = True
 SECRET_KEY = '5434#$%3434c34%#4d535@#^8^(8n64342534'
 DEBUG_TB_INTERCEPT_REDIRECTS = False
 
@@ -12,7 +12,7 @@ MAIL_USERNAME = 'mindkraft.treasure.hunt'
 MAIL_PASSWORD = 'bennette'
 MAIL_DEFAULT_SENDER = ('Treasure Hunt - Mindkraft 2015', 'mindkraft.treasure.hunt@gmail.com')
 MAIL_SUPPRESS_SEND = False
-MAIL_DEBUG = False
+MAIL_DEBUG = True
 TESTING = False
 
 # Peewee configuration
