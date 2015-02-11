@@ -118,7 +118,7 @@ def teardown_request(exception):
 def test_mail():
     msg = Message(
         "Welcome to Online Treasure Hunt",
-        recipients = ['kevin.isaac70@gmail.com', 'kevini@karunya.edu.in']
+        recipients = ['mindkraft.treasure.hunt@gmail.com']
     )
     msg.body = """
     Hello. Thanks for signing up. Click on the following link to activate your account.
@@ -245,7 +245,7 @@ def register():
             token=token
         )
         # Send confirmation email
-        recipients = ['kevin.isaac70@gmail.co', new_user.email]
+        recipients = ['mindkraft.treasure.hunt@gmail.com', new_user.email]
         for recipient in recipients:
             msg = Message(
                 "Welcome to Online Treasure Hunt - Mindkraft 2015",
@@ -599,7 +599,7 @@ def validate_account():
     user.save()
     
     # Send welcome email
-    recipients = ['kevin.isaac70@gmail.com', user.email]
+    recipients = ['mindkraft.treasure.hunt@gmail.com', user.email]
     for recipient in recipients:
         msg = Message(
             "Welcome to Online Treasure Hunt",
