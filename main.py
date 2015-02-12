@@ -278,7 +278,7 @@ def register():
             except Exception:
                 flash('Login to continue')
                 return redirect('https://online-treasure.herokuapp.com/account/validate?email=' + str(new_user.email) + '&token=' + str(new_user.token))
-        flash('Account created successfully! Head over to ' + request.form['email'] + ' for confirmation link.', 'success')
+        flash('Account created successfully! Head over to ' + request.form['email'] + ' for confirmation link.')
         return redirect(url_for('login'))
     return render_template('register.html', registration_form=RegistrationForm(), top_users=get_all_users())
 
@@ -635,11 +635,11 @@ def validate_account():
         
         Nothing. You've already registered. We'll help you get started. Follow the simple steps.<br />
         
-        &nbsp&nbsp&nbsp1. Head over to online-treasure.herokuapp.com.<br />
-        &nbsp&nbsp&nbsp2. Login with your username/mail and password.<br />
-        &nbsp&nbsp&nbsp3. Head over to the home page (By clicking on the "Online treasure hunt" page title).<br />
-        &nbsp&nbsp&nbsp4. You'll see a list of posts. Go through them. Read them carefully. They'll guide you from there.<br />
-        &nbsp&nbsp&nbsp5. Have fun.<br />
+        &nbsp&;nbsp;&nbsp;1. Head over to online-treasure.herokuapp.com.<br />
+        &nbsp;&nbsp;&nbsp;2. Login with your username/mail and password.<br />
+        &nbsp;&nbsp;&nbsp;3. Head over to the home page (By clicking on the "Online treasure hunt" page title).<br />
+        &nbsp;&nbsp;&nbsp;4. You'll see a list of posts. Go through them. Read them carefully. They'll guide you from there.<br />
+        &nbsp;&nbsp;&nbsp;5. Have fun.<br /><br />
 
         <b>How do I contact you in case of any queries?</b><br /><br />
         
@@ -655,7 +655,7 @@ def validate_account():
         Find us at:<br />
             <a href="https://online-treasure.herokuapp.com">221b Baker Street</a><br />
             Forum - <a href="https://reddit.com/r/iamsherlocked">/r/iamsherlocked</a>
-        """ % (recipient)
+        """ % (user.name)
         try:
             mail.send(msg)
         except Exception:
