@@ -263,11 +263,11 @@ def register():
         recipients = ['mindkraft.treasure.hunt@gmail.com', new_user.email]
         for recipient in recipients:
             msg = Message(
-                "Welcome to Online Treasure Hunt - Mindkraft 2015",
+                "Confirm your registration",
                 recipients = [recipient]
             )
             msg.body = """
-            Hello. Thanks for signing up. Click on the following link to activate your account.
+            Hello. Thanks for signing up for Online Treasure Hunt. Click on the following link to activate your account.
             
             https://online-treasure.herokuapp.com/account/validate?email=%s&token=%s
             
@@ -621,7 +621,7 @@ def validate_account():
     recipients = ['mindkraft.treasure.hunt@gmail.com', user.email]
     for recipient in recipients:
         msg = Message(
-            "Welcome to Online Treasure Hunt",
+            "Welcome to Online Treasure Hunt - Mindkraft 2015",
             recipients = [recipient]
         )
         msg.html = """
