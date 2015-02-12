@@ -268,12 +268,16 @@ def register():
             )
             msg.body = """
             Hello. Thanks for signing up. Click on the following link to activate your account.
-
+            
             https://online-treasure.herokuapp.com/account/validate?email=%s&token=%s
-
+            
             See you on the other side!
             """ % (new_user.email, new_user.token)
-            mail.send(msg)
+            try:
+                mail.send(msg)
+            except Exception:
+                flash('Login to continue')
+                return redirect('https://online-treasure.herokuapp.com/account/validate?email=' + str(new_user.email) + '&token=' + str(new_user.token))
         flash('Account created successfully! Head over to ' + request.form['email'] + ' for confirmation link.', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', registration_form=RegistrationForm(), top_users=get_all_users())
@@ -620,19 +624,42 @@ def validate_account():
             "Welcome to Online Treasure Hunt",
             recipients = [recipient]
         )
-        msg.body = """
-        Hello! Welcome to the event. The following are a few rules and regulations.
+        msg.html = """
+        Hey %s!<br /><br />
         
-        <b>Rules:</b>
-        1. df
-        2. df
-        3. dff
+        We’re glad that you’re interested in this quest! This is an online treasure hunt type event. Like all other such events, this consists of a series of puzzles that you’ll solve consecutively to move on to the next level until you find this final “Treasure”.<br /><br />
         
-        <b>Heads ups:</b>
-        1. one
-        2. two
-        """
-        mail.send(msg)
+        Trust us; you’ll have a good deal of fun playing this! This event is packed with tons of bonus puzzles, riddles, fun and prizes for the top detective(s).<br /><br />
+        
+        <b>What do I have to do?</b><br /><br />
+        
+        Nothing. You’ve already registered. We’ll help you get started. Follow the simple steps.<br />
+        
+        &nbsp&nbsp&nbsp1. Head over to online-treasure.herokuapp.com.<br />
+        &nbsp&nbsp&nbsp2. Login with your username/mail and password.<br />
+        &nbsp&nbsp&nbsp3. Head over to the home page (By clicking on the “Online treasure hunt” page title).<br />
+        &nbsp&nbsp&nbsp4. You’ll see a list of posts. Go through them. Read them carefully. They’ll guide you from there.<br />
+        &nbsp&nbsp&nbsp5. Have fun.<br />
+
+        <b>How do I contact you in case of any queries?</b><br /><br />
+        
+        In case of queries regarding puzzles, comment it out. In case of general queries and discussions, visit our sub-reddit : <a href="https://reddit.com/r/iamsherlocked">/r/iamsherlocked</a>.<br /><br />
+        
+        <b>I’ve got more questions. Is there an FAQ?</b><br /><br />
+        
+        Come on now! It’s not that tough. Just start up already, you’ll catch up! ;)<br /><br />
+        
+        Regards,<br />
+        The SherLOCKED team.<br /><br />
+        
+        Find us at:<br />
+            <a href="https://online-treasure.herokuapp.com">221b Baker Street</a><br />
+            Forum - <a href="https://reddit.com/r/iamsherlocked">/r/iamsherlocked</a>
+        """ % (recipient)
+        try:
+            mail.send(msg)
+        except Exception:
+            pass
     
     flash('Account verified successfully! Login to continue')
     return redirect(url_for('login'))
