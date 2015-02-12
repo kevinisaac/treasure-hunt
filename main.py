@@ -635,7 +635,7 @@ def validate_account():
         
         Nothing. You've already registered. We'll help you get started. Follow the simple steps.<br />
         
-        &nbsp&;nbsp;&nbsp;1. Head over to online-treasure.herokuapp.com.<br />
+        &nbsp;&nbsp;&nbsp;1. Head over to online-treasure.herokuapp.com.<br />
         &nbsp;&nbsp;&nbsp;2. Login with your username/mail and password.<br />
         &nbsp;&nbsp;&nbsp;3. Head over to the home page (By clicking on the "Online treasure hunt" page title).<br />
         &nbsp;&nbsp;&nbsp;4. You'll see a list of posts. Go through them. Read them carefully. They'll guide you from there.<br />
