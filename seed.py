@@ -19,9 +19,10 @@ print 'Done!'
 # Populate tables
 # Add moderators
 print 'Poplulating mods...'
-mods = ['rex', 'kevin', 'nicholas']
-for user in mods:
-    User.create(name=user, email=user+'@gmail.com', password=generate_password_hash(user), user_type='mod', token='', college='', register_no='', city='', phone='')
+mods = ('The Mailman', 'The anonymous phone call', 'Dream', 'Anonymous')
+emails = ('rinaldorex94@gmail.com', 'kevin.isaac70@gmail.com', 'nicholasrdavid@gmail.com', 'glenpadua01@gmail.com')
+for user, email in zip(mods, emails):
+    User.create(name=user, email=email, password=generate_password_hash(email), user_type='mod', token='', college='', register_no='', city='', phone='')
 print 'Done!'
 
 # Add users
