@@ -627,27 +627,27 @@ def validate_account():
         msg.html = """
         Hey %s!<br /><br />
         
-        We’re glad that you’re interested in this quest! This is an online treasure hunt type event. Like all other such events, this consists of a series of puzzles that you’ll solve consecutively to move on to the next level until you find this final “Treasure”.<br /><br />
+        We're glad that you're interested in this quest! This is an online treasure hunt type event. Like all other such events, this consists of a series of puzzles that you'll solve consecutively to move on to the next level until you find this final "Treasure".<br /><br />
         
-        Trust us; you’ll have a good deal of fun playing this! This event is packed with tons of bonus puzzles, riddles, fun and prizes for the top detective(s).<br /><br />
+        Trust us; you'll have a good deal of fun playing this! This event is packed with tons of bonus puzzles, riddles, fun and prizes for the top detective(s).<br /><br />
         
         <b>What do I have to do?</b><br /><br />
         
-        Nothing. You’ve already registered. We’ll help you get started. Follow the simple steps.<br />
+        Nothing. You've already registered. We'll help you get started. Follow the simple steps.<br />
         
         &nbsp&nbsp&nbsp1. Head over to online-treasure.herokuapp.com.<br />
         &nbsp&nbsp&nbsp2. Login with your username/mail and password.<br />
-        &nbsp&nbsp&nbsp3. Head over to the home page (By clicking on the “Online treasure hunt” page title).<br />
-        &nbsp&nbsp&nbsp4. You’ll see a list of posts. Go through them. Read them carefully. They’ll guide you from there.<br />
+        &nbsp&nbsp&nbsp3. Head over to the home page (By clicking on the "Online treasure hunt" page title).<br />
+        &nbsp&nbsp&nbsp4. You'll see a list of posts. Go through them. Read them carefully. They'll guide you from there.<br />
         &nbsp&nbsp&nbsp5. Have fun.<br />
 
         <b>How do I contact you in case of any queries?</b><br /><br />
         
         In case of queries regarding puzzles, comment it out. In case of general queries and discussions, visit our sub-reddit : <a href="https://reddit.com/r/iamsherlocked">/r/iamsherlocked</a>.<br /><br />
         
-        <b>I’ve got more questions. Is there an FAQ?</b><br /><br />
+        <b>I've got more questions. Is there an FAQ?</b><br /><br />
         
-        Come on now! It’s not that tough. Just start up already, you’ll catch up! ;)<br /><br />
+        Come on now! It's not that tough. Just start up already, you'll catch up! ;)<br /><br />
         
         Regards,<br />
         The SherLOCKED team.<br /><br />
