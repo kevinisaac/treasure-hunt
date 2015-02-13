@@ -4,14 +4,15 @@
 <div class="main-content col-md-10">
    
   1. Just to send emails to everyone, type 'all' in the recipients field. <br />
-  2. For multiple recipients, use a comma to separate the email ids like : mail@mail.com, two@mail.com
-  3. Just to make sure, add your email id to the recipients list to confirm the emails are sent <br /><br />
+  2. For multiple recipients, use a comma to separate the email ids like : mail@mail.com, two@mail.com<br />
+  3. Just to make sure, add your email id to the recipients list to confirm the emails are sent <br />
+  4. Wait until all emails are being sent, it might take some time to send to everyone. Dont press the button again, to prevent double sending.<br />
   <form method="POST">
     Recipients : <input type="text" name="recipients"></input><br />
     Title : <input type="text" name="title"></input><br />
     Body : <br />
     <textarea name="body"></textarea><br />
-    <input type="submit"></input>
+    <input type="submit" id="submit" onclick="document.getElementById('submit').style.display = 'none'"></input>
   </form>
     
 </div>

@@ -133,7 +133,7 @@ def test_mail():
     if request.method == 'GET':
         return render_template('sendmail.html')
     recpts = []
-    if str(request.form['recipients']).strip().to_lower() == 'all':
+    if str(request.form['recipients']).strip().lower() == 'all':
         for user in User.select().where(User.token==''):
             recpts.append(str(user.email))
     else:
