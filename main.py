@@ -172,8 +172,8 @@ def before_request():
     print 'before connect'
     db.connect()
     print 'after connect'
-    if not request.is_secure:
-        return redirect(request.url.replace('http://', 'https://'))
+    # if not request.is_secure:
+    #     return redirect(request.url.replace('http://', 'https://'))
 
 @app.teardown_request
 def teardown_request(exception):
