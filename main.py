@@ -375,7 +375,7 @@ def post(id, slug):
                 accepted_submission = None
             if submission_form.validate() and accepted_submission is None:
                 status = 'rejected'
-                sols = str(Post.get(id=int(id)).correct_solution).lower().strip().split(',')
+                sols = str(Post.get(id=int(id)).correct_solution).lower().strip().split('|')
                 sols1 = []
                 for sol in sols:
                     sols1.append(sol.lower().strip())
