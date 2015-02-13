@@ -53,6 +53,55 @@ login_manager.init_app(app)
 mail = Mail(app)
 print 'mail instantiated'
 
+def send_newpost_email(min_level, new_post):
+    url = 'https://online-treasure.herokuapp.com/posts/%s/%s' % (str(new_post.id), str(slugify(new_post.title)))
+    users = User.select()
+    print 'Users', users
+    for user in users:
+        # Get the level of the user
+        try:
+            max_post = (Post.select()
+                .where(Post.problem_type != 'bonus')
+                .join(Submission)
+                .where(Submission.id_user_posted_by == int(user.id))
+                .where(Submission.status == 'accepted')
+                .order_by(Post.level.desc())
+                .get()
+            )
+            level = max_post.level + 1
+        except DoesNotExist:
+            level = 1
+        user.level = level
+        print 'Level - ', user.level, 'Min level -', min_level
+        
+        # Check and send email to that user
+        msg = Message(
+            'Online Treasure Hunt - New post',
+            recipients = [str(user.email)]
+        )
+        msg.html = """
+        Hello detective!<br /><br />
+        
+        Some new information has been disclosed, since you last logged in. Head over to %s to see what it is.<br /><br />
+        
+        Regards,<br />
+        The SherLOCKED team.<br /><br />
+        Find us at:<br />
+        <a href="online-treasure.herokuapp.com">221b Baker Street</a><br />
+        Forum - <a href="https://reddit.com/r/iamsherlocked">/r/iamsherlocked</a>
+        """ % url
+        print 'Comparision gonna happen'
+        if int(user.level) >= int(min_level):
+            try:
+                mail.send(msg)
+                print 'New post email sent to %s' % user.email
+            except Exception:
+                print
+                print " ------  New post email not sent to %s" % user.email
+                print
+    print 'Goin gout of function'
+    return 'Hopefully the emails are sent.'
+
 def get_all_users():
     try:
         users = User.select().where(User.user_type!='mod', User.token=='')
@@ -568,7 +617,7 @@ def create_post():
                 level = request.form['level']
                 points = request.form['points']
                 problem_type = request.form['problem_type']
-            Post.create(
+            new_post = Post.create(
                 description=request.form['description'],
                 id_user_posted_by=int(current_user.id),
                 title=request.form['title'],
@@ -577,6 +626,9 @@ def create_post():
                 points=points,
                 problem_type=problem_type
             )
+            print 'Calling send function'
+            send_newpost_email(level, new_post)
+            print 'Called send function'
             return redirect(url_for('index'))
         return render_template('create_post.html', post_form=PostForm(), top_users=get_all_users())
 
