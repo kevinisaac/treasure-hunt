@@ -87,7 +87,7 @@ def send_newpost_email(min_level, new_post):
         Regards,<br />
         The SherLOCKED team.<br /><br />
         Find us at:<br />
-        <a href="online-treasure.herokuapp.com">221b Baker Street</a><br />
+        <a href="https://online-treasure.herokuapp.com">221b Baker Street</a><br />
         Forum - <a href="https://reddit.com/r/iamsherlocked">/r/iamsherlocked</a>
         """ % url
         print 'Comparision gonna happen'
@@ -704,7 +704,7 @@ def validate_account():
         
         Nothing. You've already registered. We'll help you get started. Follow the simple steps.<br />
         
-        &nbsp;&nbsp;&nbsp;1. Head over to online-treasure.herokuapp.com.<br />
+        &nbsp;&nbsp;&nbsp;1. Head over to https://online-treasure.herokuapp.com.<br />
         &nbsp;&nbsp;&nbsp;2. Login with your username/mail and password.<br />
         &nbsp;&nbsp;&nbsp;3. Head over to the home page (By clicking on the "Online treasure hunt" page title).<br />
         &nbsp;&nbsp;&nbsp;4. You'll see a list of posts. Go through them. Read them carefully. They'll guide you from there.<br />
