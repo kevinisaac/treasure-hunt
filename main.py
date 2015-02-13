@@ -137,7 +137,7 @@ def test_mail():
         for user in User.select().where(User.token==''):
             recpts.append(str(user.email))
     else:
-        recpts = request.form['body'].split(',')
+        recpts = request.form['recipients'].split(',')
     for recpt in recpts:
         msg = Message(
             str(request.form['title']),
@@ -151,8 +151,8 @@ def test_mail():
             print
             print " ------  Email %s not sent to %s" % (request.form['title'], recpt)
             print
-        flash('Hopefully the emails are sent')
-        return 'Hopefully the emails are sent.'
+    flash('Hopefully the emails are sent')
+    return 'Hopefully the emails are sent.'
 
 @app.route('/')
 @login_required
