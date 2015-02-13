@@ -10,6 +10,7 @@ from flask import (
     session,
     url_for
 )
+from flask_sslify import SSLify
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_mail import Mail, Message
 from flask.ext.bcrypt import generate_password_hash, check_password_hash
@@ -48,6 +49,9 @@ print 'app created'
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
+
+if 'DYNO' in os.environ: # only trigger SSLify if the app is running on Heroku
+    sslify = SSLify(app)
 
 # toolbar = DebugToolbarExtension(app)
 mail = Mail(app)
