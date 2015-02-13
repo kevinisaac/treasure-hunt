@@ -375,7 +375,11 @@ def post(id, slug):
                 accepted_submission = None
             if submission_form.validate() and accepted_submission is None:
                 status = 'rejected'
-                if str(submission_form.solution.data).lower().strip() == str(Post.get(id=int(id)).correct_solution).lower().strip():
+                sols = str(Post.get(id=int(id)).correct_solution).lower().strip().split(',')
+                sols1 = []
+                for sol in sols:
+                    sols1.append(sol.lower().strip())
+                if str(submission_form.solution.data).lower().strip() in sols1:
                     status = 'accepted'
                     flash('Your answer was correct. Congratulations!')
                 else:
