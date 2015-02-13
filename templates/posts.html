@@ -31,11 +31,11 @@
           <div class="post-meta col-md-12">
             <div class="post-date col-md-3">Posted at {{post.created_at}}</div>
             {% if current_user.user_type == 'mod' %}
-             <form action="" class="col-md-offset-5 col-md-1">
-                 <input type="text" class="btn btn-primary btn-xs col-md-12" value="Edit">
+             <form action="" class="col-md-offset-5 ">
+                 <input type="text" class="btn btn-primary btn-xs col-md-offset-2 col-md-1 btn-post" value="Edit">
              </form>
-             <form action="/posts/{{post.id}}/a/delete" method="post" class="col-md-1">
-                 <input type="submit" class="btn btn-primary btn-xs col-md-12" value="Delete">
+             <form action="/posts/{{post.id}}/a/delete" method="post" >
+                 <input type="submit" class="btn btn-primary btn-xs col-md-1 btn-post" value="Delete">
              </form>
             {% endif %}
          </div>
