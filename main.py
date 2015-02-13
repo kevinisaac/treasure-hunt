@@ -125,21 +125,34 @@ def teardown_request(exception):
     db.close()
 
 # Routes
-@app.route('/test/mail')
+@app.route('/mail/send', methods=['GET', 'POST'])
 @login_required
 def test_mail():
-    msg = Message(
-        "Welcome to Online Treasure Hunt",
-        recipients = ['mindkraft.treasure.hunt@gmail.com']
-    )
-    msg.body = """
-    Hello. Thanks for signing up. Click on the following link to activate your account.
-
-    https://online-treasure.herokuapp.com/verify?token=
-
-    See you on the other side!
-    """
-    mail.send(msg)
+    if current_user.user_type != 'mod':
+        abort(404)
+    if request.method == 'GET':
+        return render_template('sendmail.html')
+    recpts = []
+    if str(request.form['recipients']).strip().to_lower() == 'all':
+        for user in User.select().where(User.token==''):
+            recpts.append(str(user.email))
+    else:
+        recpts = request.form['body'].split(',')
+    for recpt in recpts:
+        msg = Message(
+            str(request.form['title']),
+            recipients = [str(recpt.strip())]
+        )
+        msg.body = str(request.form['body'])
+        try:
+            mail.send(msg)
+            print 'Email %s sent to %s' % (request.form['title'], recpt)
+        except Exception:
+            print
+            print " ------  Email %s not sent to %s" % (request.form['title'], recpt)
+            print
+        flash('Hopefully the emails are sent')
+        return 'Hopefully the emails are sent.'
 
 @app.route('/')
 @login_required
