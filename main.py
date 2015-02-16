@@ -404,20 +404,23 @@ def post(id, slug):
 
     # Get the users who have solved this puzzle
     solved_by_users_obj = (
-        User.select(User.name, User.id)
+        User.select()
         .join(Submission)
-        .where(Submission.status == 'solved')
-        .where(Submission.id_post == id)
+        .where(Submission.status == 'accepted')
+        .where(Submission.id_post == int(id))
+        .where(User.user_type != 'mod')
     )
     solved_by_users = []
+    print 'Before solved by users'
     for user in solved_by_users_obj:
         print
-        print user.name, user.id
+        print 'Solved by', user.name, user.id
         print
         solved_by_users.append({
             'name': user.name,
             'id': user.id
         })
+    print 'After solved by users'
     
     if request.method == 'POST':
         if not request.args.get('solution'):
@@ -481,6 +484,7 @@ def post(id, slug):
         comment_form=CommentForm(),
         submission_form=SubmissionForm(),
         solved_by_users=solved_by_users,
+        solved_by_users_count=len(solved_by_users),
         top_users=get_all_users()
     )
 
