@@ -328,7 +328,7 @@ def register():
             token=token
         )
         # Send confirmation email
-        recipients = ['mindkraft.treasure.hunt@gmail.com', new_user.email]
+        recipients = [new_user.email]
         for recipient in recipients:
             msg = Message(
                 "Confirm your registration",
@@ -693,7 +693,7 @@ def validate_account():
     user.save()
     
     # Send welcome email
-    recipients = ['mindkraft.treasure.hunt@gmail.com', user.email]
+    recipients = [user.email]
     for recipient in recipients:
         msg = Message(
             "Welcome to Online Treasure Hunt - Mindkraft 2015",
