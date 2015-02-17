@@ -210,3 +210,12 @@ class UploadForm(Form):
 
     def validate(self):
         return True
+
+class CreateTeamForm(Form):
+    name = wtforms.TextField('Team name', [InputRequired()])
+
+    def __init__(self, *args, **kwargs):
+        Form.__init__(self, *args, **kwargs)
+
+    def validate(self):
+        return True

@@ -10,11 +10,16 @@ from peewee import *
 #     autocommit=True,
 #     autorollback=True
 # )
+# db = MySQLDatabase(
+#     'cdb_eval_b15bf53043ed33d',
+#     host = 'us-mm-demo-dca-01.cleardb.com',
+#     user = '14590faa1103ba',
+#     password = '0268a94e'
+# )
 db = MySQLDatabase(
-    'cdb_eval_b15bf53043ed33d',
-    host = 'us-mm-demo-dca-01.cleardb.com',
-    user = '14590faa1103ba',
-    password = '0268a94e'
+    'oth',
+    user = 'oth',
+    password = 'oth'
 )
 
 class BaseModel(Model):
@@ -65,14 +70,20 @@ class Comment(BaseModel):
     id_user_posted_by = ForeignKeyField(User, related_name='comment_posted_by_user')
     status = CharField() # accepted, rejected
 
-class Problem(BaseModel):
-    """This model represents a problem."""
-    description = TextField()
-    id_user_posted_by = ForeignKeyField(User, related_name='problem_posted_by_user')
-
 class Submission(BaseModel):
     """This model represents a solution submitted by the user."""
     id_post = ForeignKeyField(Post, related_name='post')
     id_user_posted_by = ForeignKeyField(User, related_name='submitted_by_user')
     solution = TextField()
     status = TextField() # accepted, rejected
+
+class Team(BaseModel):
+    """This model represents a team."""
+    name = TextField()
+    id_user_created_by = ForeignKeyField(User, related_name='team_created_by_user')
+
+class TeamUser(BaseModel):
+    """This model represents a user with a team."""
+    id_team = ForeignKeyField(Team, related_name='team')
+    id_user = ForeignKeyField(User, related_name='team_member')
+    status = TextField()

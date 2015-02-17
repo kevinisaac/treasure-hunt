@@ -29,7 +29,8 @@ from forms import (
     ProfileForm,
     RegistrationForm,
     SubmissionForm,
-    UploadForm
+    UploadForm,
+    CreateTeamForm
 )
 from models import *
 from slugify import slugify
@@ -637,7 +638,7 @@ def create_post():
                 problem_type=problem_type
             )
             print 'Calling send function'
-            send_newpost_email(level, new_post)
+            # send_newpost_email(level, new_post)
             print 'Called send function'
             return redirect(url_for('index'))
         return render_template('create_post.html', post_form=PostForm(), top_users=get_all_users())
@@ -808,3 +809,127 @@ def reset_password_form():
     print hashlib.md5(user.password).hexdigest()
     flash('Password reset email has been sent')
     return redirect(url_for('reset_password_form'))
+
+
+# Team related routes -----------------------------------------------------------
+
+@app.route('/teams/create', methods=['GET', 'POST'])
+@login_required
+def create_team():
+    if request.method == 'POST':
+        # Exit if current user is moderator
+        if current_user.user_type == 'mod':
+            flash('Moderator cannot create a team')
+            return redirect(url_for('create_team'))
+        
+        # Exit if current user is in an active team
+        try:
+            team_user = TeamUser.get(
+                TeamUser.id_user == int(current_user.id),
+                TeamUser.status == 'accepted'
+            )
+            flash('You are already in a team')
+            return redirect(url_for('create_team'))
+        except Exception, e:
+            pass
+        
+        # Create the team
+        print 'Team name', request.form['name'], current_user.id
+        new_team = Team.create(
+            name = request.form['name'],
+            id_user_created_by = 23
+        )
+        
+        # Add user who created the team as team creator
+        new_team_user = TeamUser.create(
+            id_team = new_team.id,
+            id_user = current_user.id,
+            status = 'accepted'
+        )
+        flash('New team created successfully!')
+        return redirect(url_for('create_team'))
+        
+    return render_template(
+        'create_team.html',
+        create_team_form = CreateTeamForm()
+    )
+
+# Route to a team profile
+@app.route('/teams/<int:id>', methods=['GET'])
+@login_required
+def team_profile():
+    return render_template(
+        'team_profile.html'
+    )
+
+# Route to join a team
+@app.route('/teams/<int:id>/add', methods=['POST'])
+@login_required
+def join_team():
+    # Exit if you are a moderator
+    if current_user.user_type == 'mod':
+        flash('Moderator cannot join a team')
+        return redirect('/teams/' + str(id))
+    
+    # Exit if you are already in a team
+    try:
+        team_user = TeamUser.get(
+            TeamUser.id_user == current_user.id,
+            TeamUser.status == 'accepted'
+        )
+        flash('You are already in a team')
+        return redirect(url_for('/teams/' + str(id)))
+    except Exception, e:
+        pass
+
+    # Exit if the member is not invited to join the team
+    try:
+        team_user = TeamUser.get(
+            TeamUser.id_user == current_user.id,
+            TeamUser.id_team == id,
+            TeamUser.status == 'pending_in'
+        )
+    except Exception, e:
+        flash('You are not invited to join the team')
+        return redirect(url_for('/teams/' + str(id)))
+    
+    # Add the user to the team
+    team_user.status = 'accepted'
+    team_user.save()
+
+@app.route('/users/<int:id>/add', methods=['GET'])
+@login_required
+def add_member_to_team():
+    # Exit if it is not a valid team id
+    try:
+        team = Team.get(
+            Team.id == int(request.args.get('team_id'))
+        )
+    except:
+        flash('Team ID is not a valid one')
+        return redirect('/users/' + str(id))
+
+    # Exit if current user is not the creator of the team
+    if team.id_user_created_by != current_user.id:
+        flash('You are not the creator of the team')
+        return redirect('/users/' + str(id))
+    
+    # Exit if user is already in a team
+    try:
+        team_user = TeamUser.get(
+            TeamUser.id_user == current_user.id,
+            TeamUser.status == 'accepted'
+        )
+        flash('User already in a team')
+        return redirect(url_for('/users/' + str(id)))
+    except Exception, e:
+        pass
+    
+    # Add pending in status to the user
+    new_team_user = TeamUser(
+        id_team = team.id,
+        id_user = id,
+        status = 'pending_in'
+    )
+    flash('User has been invited to join your team')
+    return redirect(url_for('/users/' + str(id)))
