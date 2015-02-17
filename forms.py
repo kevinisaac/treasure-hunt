@@ -212,10 +212,19 @@ class UploadForm(Form):
         return True
 
 class CreateTeamForm(Form):
-    name = wtforms.TextField('Team name', [InputRequired()])
+    name = wtforms.TextField(
+        'Team name',
+        [
+            validators.Required(),
+            validators.Length(min=2, max=100, message='Team name size should be between 2 and 40, inclusive')
+        ]
+    )
 
     def __init__(self, *args, **kwargs):
         Form.__init__(self, *args, **kwargs)
 
     def validate(self):
+        if not Form.validate(self):
+            flash('Team name size should be between 2 and 40, inclusive')
+            return False
         return True

@@ -603,10 +603,27 @@ def profile(id):
     except DoesNotExist:
         pass
         
+    # Get the team of current user
+    try:
+        team = (
+            Team.select()
+            .join(TeamUser)
+            .where(TeamUser.id_user == current_user.id)
+            .where(TeamUser.status == 'accepted')
+            .get()
+        )
+    except DoesNotExist:
+        team = None
+
     user.level = level
     user.points = points
     
-    return render_template('profile.html', user=user, top_users=get_all_users())
+    return render_template(
+        'profile.html',
+        user = user,
+        team = team,
+        top_users = get_all_users()
+    )
 
 @app.route('/posts/create', methods=['GET', 'POST'])
 @login_required
@@ -811,12 +828,27 @@ def reset_password_form():
     return redirect(url_for('reset_password_form'))
 
 
+
+def get_team_points(id):
+    return 12
+
+def get_team_rank(id):
+    return 1
+
+def get_team_members(id):
+    return []
+
+
+
+
+
 # Team related routes -----------------------------------------------------------
 
 @app.route('/teams/create', methods=['GET', 'POST'])
 @login_required
 def create_team():
-    if request.method == 'POST':
+    create_team_form = CreateTeamForm(request.form)
+    if request.method == 'POST' and create_team_form.validate():
         # Exit if current user is moderator
         if current_user.user_type == 'mod':
             flash('Moderator cannot create a team')
@@ -857,9 +889,20 @@ def create_team():
 # Route to a team profile
 @app.route('/teams/<int:id>', methods=['GET'])
 @login_required
-def team_profile():
+def team_profile(id):
+    # Get team details
+    try:
+        team = Team.select().where(Team.id == id).get()
+    except DoesNotExist:
+        abort(404)
+    
+    team.points = get_team_points(id)
+    team.rank = get_team_rank(id)
+    team.members = get_team_members(id)
+    
     return render_template(
-        'team_profile.html'
+        'team_profile.html',
+        team = team
     )
 
 # Route to join a team

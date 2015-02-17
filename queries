@@ -1,0 +1,22 @@
+CREATE TABLE `team` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `created_at` datetime NOT NULL,
+    `name` longtext NOT NULL,
+    `id_user_created_by_id` int(11) NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `team_id_user_created_by_id` (`id_user_created_by_id`),
+    CONSTRAINT `team_ibfk_1` FOREIGN KEY (`id_user_created_by_id`) REFERENCES `user` (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8
+
+CREATE TABLE `teamuser` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `created_at` datetime NOT NULL,
+    `id_team_id` int(11) NOT NULL,
+    `id_user_id` int(11) NOT NULL,
+    `status` longtext NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `teamuser_id_user_id` (`id_user_id`),
+    KEY `teamuser_id_team_id` (`id_team_id`),
+    CONSTRAINT `teamuser_ibfk_1` FOREIGN KEY (`id_team_id`) REFERENCES `team` (`id`),
+    CONSTRAINT `teamuser_ibfk_2` FOREIGN KEY (`id_user_id`) REFERENCES `user` (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8

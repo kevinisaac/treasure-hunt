@@ -30,6 +30,16 @@
         <div class="title col-md-6">Rank:</div>
         <div class="value col-md-6">{{user.rank}}</div>
     </div>
+    <div class="profile-detail">
+        <div class="title col-md-6">Team:</div>
+        <div class="value col-md-6">
+            {% if team %}
+                <a href="/teams/{{team.id}}">{{team.name}}</a>
+            {% else %}
+                User has no team
+            {% endif %}
+        </div>
+    </div>
     {% if current_user.user_type == 'mod' %}
         <div class="profile-detail">
             <div class="title col-md-6">Email:</div>

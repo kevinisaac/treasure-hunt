@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block maincontent %}
+
+Team Name : {{ team.name }} <br />
+Total points : {{ team.points }} <br />
+Team rank : {{ team.rank }}<br /> <br />
+
+<b>Team Members: </b><br />
+{% for user in team.members %}
+    <a href="{{user.id}}">{{user.name}}</a><br />
+{% endfor %}
+
+{% endblock %}
