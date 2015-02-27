@@ -53,7 +53,7 @@
                 <div class="side-1">
                     
                     <ul class="side-menu">
-                        <li class="menu-title">Top scorers</li>
+                        <li class="menu-title">&nbsp</li>
                         {% set i = 0 %}
                           {% if top_users %}
                             {% for user in top_users | sort(attribute='rank') %}
@@ -68,12 +68,12 @@
                 <div class="side-2">
                     <ul class="side-menu">
                       {% if current_user.user_type == 'mod' %}
-                        <li class="menu-title">Users who've solved this puzzle</li>
+                        <li class="menu-title">&nbsp</li>
                         {% for user in solved_by_users %}
                           <a href="{{url_for('profile', id=user.id)}}"><li>{{user.name}}</li></a>
                         {% endfor %}
                       {% else %}
-                        <li class="menu-title">No. of users solved : {{solved_by_users_count}}</li>
+                        <li class="menu-title">&nbsp {{solved_by_users_count}}</li>
                         <a href="#"><li></li>&nbsp</a>
                         <a href="#"><li></li>&nbsp</a>
                         <a href="#"><li></li>&nbsp</a>

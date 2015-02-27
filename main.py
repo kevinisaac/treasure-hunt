@@ -184,6 +184,7 @@ def teardown_request(exception):
 @app.route('/mail/send', methods=['GET', 'POST'])
 @login_required
 def test_mail():
+    return render_template('end.html')
     if current_user.user_type != 'mod':
         abort(404)
     if request.method == 'GET':
@@ -214,6 +215,7 @@ def test_mail():
 @login_required
 def index():
     """Home page"""
+    return render_template('end.html')
     print current_user.is_authenticated()
     # Get the level of the user
     try:
@@ -310,6 +312,7 @@ def logout():
 # @logout_required('index')
 def register():
     """Registration page"""
+    return render_template('end.html')
     logout_user()
     if request.method == 'GET':
         return render_template('register.html', registration_form=RegistrationForm(), top_users=get_all_users())
@@ -355,6 +358,7 @@ def register():
 @login_required
 def post(id, slug):
     """Post page"""
+    return render_template('end.html')
     try:
         # Get the level of the user
         try:
@@ -532,6 +536,7 @@ def reject_comment(id):
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
+    return render_template('end.html')
     if request.method == 'GET':
         return render_template('account.html', profile_form=ProfileForm(), password_form=PasswordForm(), top_users=get_all_users())
     else:
@@ -551,6 +556,7 @@ def account():
 @app.route('/change-password', methods=['POST'])
 @login_required
 def change_password():
+    return render_template('end.html')
     password_form = PasswordForm(request.form)
     if password_form.validate():
         user = User.get(id=int(current_user.id))
@@ -663,6 +669,7 @@ def create_post():
 @app.route('/posts/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_post():
+    return render_template('end.html')
     """Edit the details of a post."""
     if current_user.user_type != 'mod':
         abort(404)
@@ -690,6 +697,7 @@ def leaderboard_api():
 # Validate account route
 @app.route('/account/validate')
 def validate_account():
+    return render_template('end.html')
     logout_user()
     
     if not request.args.get('email') or not request.args.get('token'):
@@ -764,6 +772,7 @@ def validate_account():
 # Email my password reset link
 @app.route('/account/reset', methods=['GET', 'POST'])
 def reset_password():
+    return render_template('end.html')
     if request.method == 'POST':
         # Abort if no user is found
         try:
@@ -798,6 +807,7 @@ def reset_password():
 
 @app.route('/account/reset/form', methods=['GET', 'POST'])
 def reset_password_form():
+    return render_template('end.html')
     logout_user()
     if request.method == 'GET':
         return render_template('forgotpassword.html', top_users=get_all_users())
