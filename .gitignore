@@ -12,3 +12,4 @@ venv-oth
 static/img
 instance
 data
+models.py.bkp
